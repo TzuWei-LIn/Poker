@@ -1,0 +1,158 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Poker_Server_Client" x:Class="Poker_Server_Client.MainWindow"
+        Title="MainWindow" Height="604.836" Width="771.194" Loaded="Window_Loaded" ContentRendered="Window_ContentRendered" Closed="Window_Closed_1">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="396.231" VerticalAlignment="Top" Width="593.882" Margin="96.064,41.891,0,0" Source="pack://siteoforigin:,,,/table.png" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.092"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+
+        <Button x:Name="Fold_Button" HorizontalAlignment="Left" Margin="205.108,376.717,0,0" VerticalAlignment="Top" Width="100.752" RenderTransformOrigin="0.469,0.513" Height="57.512" Content="FOLD" FontFamily="Copperplate Gothic Bold" FontSize="14.667" Click="Fold_Button_Click">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.646"/>
+                    <TranslateTransform X="-0.076" Y="-0.07"/>
+                </TransformGroup>
+            </Button.RenderTransform>
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FF005D19" Offset="1"/>
+                    <GradientStop Color="White"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <TextBox x:Name="Message_Box" HorizontalAlignment="Left" Height="105" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Margin="10,10,0,0"/>
+        <Label x:Name="Server_Inf" Content="Label" HorizontalAlignment="Left" Margin="661.906,0,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Raise_Button" HorizontalAlignment="Left" Margin="457.063,377.729,0,0" VerticalAlignment="Top" Width="100.752" RenderTransformOrigin="0.469,0.513" Height="57.512" Content="raise to double" FontFamily="Copperplate Gothic Bold" FontSize="14.667" Click="Raise_Button_Click">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.646"/>
+                    <TranslateTransform X="-0.076" Y="-0.07"/>
+                </TransformGroup>
+            </Button.RenderTransform>
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FF005D19" Offset="1"/>
+                    <GradientStop Color="White"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="Call_Button" HorizontalAlignment="Left" Margin="331.108,377.717,0,0" VerticalAlignment="Top" Width="100.752" Click="Call_Button_Click" RenderTransformOrigin="0.469,0.513" Height="57.512" Content="CALL" FontFamily="Copperplate Gothic Bold" FontSize="14.667">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.646"/>
+                    <TranslateTransform X="-0.076" Y="-0.07"/>
+                </TransformGroup>
+            </Button.RenderTransform>
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FF005D19" Offset="1"/>
+                    <GradientStop Color="White"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Rectangle Fill="#FF005D19" HorizontalAlignment="Left" Height="43" Margin="205,451,0,0" Stroke="Black" VerticalAlignment="Top" Width="353" RadiusY="5.5" RadiusX="5.5" Opacity="0.67"/>
+        <ScrollBar HorizontalAlignment="Left" Height="201.086" VerticalAlignment="Top" Margin="404.46,371.618,0,-30.704" Width="35.051" RenderTransformOrigin="0.5,0.5">
+            <ScrollBar.Background>
+                <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                    <GradientStop Color="#FF5FA672" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </ScrollBar.Background>
+            <ScrollBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-0.398"/>
+                    <RotateTransform Angle="-90.516"/>
+                    <TranslateTransform X="0.493"/>
+                </TransformGroup>
+            </ScrollBar.RenderTransform>
+        </ScrollBar>
+        <Button Content="－" HorizontalAlignment="Left" VerticalAlignment="Top" Width="33.004" Margin="285.996,453.982,0,0" FontFamily="Stencil Std" FontSize="24" Height="37" RenderTransformOrigin="0.5,0.5" FontWeight="Bold">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.228"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FF65A28F" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="29.992" Margin="526.008,453.988,0,0" FontFamily="Stencil Std" FontSize="24" Height="37" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.228"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FF65A28F" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Rectangle HorizontalAlignment="Left" Height="34" Margin="209,455,0,0" RadiusY="4.5" RadiusX="4.5" Stroke="White" VerticalAlignment="Top" Width="74">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="#FF438555"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <TextBlock HorizontalAlignment="Left" Height="25" Margin="218,464,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56" Text="20" TextAlignment="Center" FontSize="13.333"/>
+        <Image x:Name="Image_card_1" HorizontalAlignment="Left" Height="100" Margin="272,278,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image x:Name="Image_card_2" HorizontalAlignment="Left" Height="100" Margin="416,278,0,0" VerticalAlignment="Top" Width="100"/>
+        <Button x:Name="Play" Content="Play" HorizontalAlignment="Left" Margin="641,430,0,0" VerticalAlignment="Top" Width="75" Click="Play_Click"/>
+        <Label x:Name="Money_Label" Content="Label" HorizontalAlignment="Left" Margin="534,10,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="Enemy_Image_1" HorizontalAlignment="Left" Height="56" Margin="580,203,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_2" HorizontalAlignment="Left" Height="56" Margin="641,203,0,0" VerticalAlignment="Top" Width="44"/>
+        <Label x:Name="Player_Number_Label" Content="Label" HorizontalAlignment="Left" Margin="403,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Total_money_Label" Content="Label" HorizontalAlignment="Left" Margin="365,131,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="Public_card_image1" HorizontalAlignment="Left" Height="69" Margin="183,181,0,0" VerticalAlignment="Top" Width="58"/>
+        <Image x:Name="Public_card_image2" HorizontalAlignment="Left" Height="69" Margin="253,181,0,0" VerticalAlignment="Top" Width="58"/>
+        <Image x:Name="Public_card_image3" HorizontalAlignment="Left" Height="69" Margin="323,181,0,0" VerticalAlignment="Top" Width="58"/>
+        <Image x:Name="Public_card_image4" HorizontalAlignment="Left" Height="69" Margin="393,181,0,0" VerticalAlignment="Top" Width="58"/>
+        <Image x:Name="Public_card_image5" HorizontalAlignment="Left" Height="69" Margin="463,181,0,0" VerticalAlignment="Top" Width="58" RenderTransformOrigin="1.224,0.449"/>
+        <Image x:Name="Enemy_Image_3" HorizontalAlignment="Left" Height="56" Margin="522,85,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_4" HorizontalAlignment="Left" Height="56" Margin="463,85,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_5" HorizontalAlignment="Left" Height="56" Margin="289,85,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_6" HorizontalAlignment="Left" Height="56" Margin="230,85,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_7" HorizontalAlignment="Left" Height="56" Margin="134,131,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_8" HorizontalAlignment="Left" Height="56" Margin="85,131,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_9" HorizontalAlignment="Left" Height="56" Margin="85,239,0,0" VerticalAlignment="Top" Width="44"/>
+        <Image x:Name="Enemy_Image_10" HorizontalAlignment="Left" Height="56" Margin="134,239,0,0" VerticalAlignment="Top" Width="44"/>
+        <Label x:Name="Call_money_Label_0" Content="Label" HorizontalAlignment="Left" Margin="365,306,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Call_money_Label_1" Content="Label" HorizontalAlignment="Left" Margin="526,221,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Call_money_Label_2" Content="Label" HorizontalAlignment="Left" Margin="481,154,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Call_money_Label_3" Content="Label" HorizontalAlignment="Left" Margin="272,146,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Call_money_Label_4" Content="Label" HorizontalAlignment="Left" Margin="201,151,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Call_money_Label_5" Content="Label" HorizontalAlignment="Left" Margin="201,260,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
