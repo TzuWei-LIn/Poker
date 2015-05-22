@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texas_Poker_Server", "Texas_Poker_Server\Texas_Poker_Server.csproj", "{04F20365-1B36-4680-B48B-0017F4E0E8EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poker_Server_Client", "..\Visual Studio 2013\Projects\Poker_Server_Client\Poker_Server_Client\Poker_Server_Client.csproj", "{7310BA5C-2A40-4122-9850-356440A28F8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04F20365-1B36-4680-B48B-0017F4E0E8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F20365-1B36-4680-B48B-0017F4E0E8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F20365-1B36-4680-B48B-0017F4E0E8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F20365-1B36-4680-B48B-0017F4E0E8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7310BA5C-2A40-4122-9850-356440A28F8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7310BA5C-2A40-4122-9850-356440A28F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7310BA5C-2A40-4122-9850-356440A28F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7310BA5C-2A40-4122-9850-356440A28F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
