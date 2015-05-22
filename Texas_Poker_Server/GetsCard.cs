@@ -41,6 +41,7 @@ namespace Texas_Poker_Server
             data = Encoding.ASCII.GetBytes("Player_Card" + " " + User_card[location, 0].ToString() + " " + User_card[location, 1].ToString() + " " +location.ToString() + " ");
             Console.WriteLine(Encoding.ASCII.GetString(data));
             sClient[location].Send(data);
+
             sClient[location].Receive(data);
             Console.WriteLine("Send card to{0}", location);
         }

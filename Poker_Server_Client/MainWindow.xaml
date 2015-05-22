@@ -153,6 +153,7 @@
         <Label x:Name="Call_money_Label_3" Content="Label" HorizontalAlignment="Left" Margin="272,146,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_4" Content="Label" HorizontalAlignment="Left" Margin="201,151,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_5" Content="Label" HorizontalAlignment="Left" Margin="201,260,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Connect_btn" Content="Button" HorizontalAlignment="Left" Margin="32,451,0,0" VerticalAlignment="Top" Width="75" Click="Connect_btn_Click"/>
 
     </Grid>
 </Window>

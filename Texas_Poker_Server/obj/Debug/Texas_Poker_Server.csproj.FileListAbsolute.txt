@@ -9,3 +9,9 @@ C:\Users\Lin\Documents\Texas_Poker_Server\Texas_Poker_Server\obj\Debug\Texas_Pok
 C:\Users\Lin\Documents\Texas_Poker_Server\Texas_Poker_Server\bin\Debug\Texas_Poker_Server.exe
 C:\Users\Lin\Documents\Texas_Poker_Server\Texas_Poker_Server\bin\Debug\Texas_Poker_Server.pdb
 C:\Users\Lin\Documents\Texas_Poker_Server\Texas_Poker_Server\obj\Debug\Texas_Poker_Server.csprojResolveAssemblyReference.cache
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Texas_Poker_Server\bin\Debug\Texas_Poker_Server.exe.config
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Texas_Poker_Server\obj\Debug\Texas_Poker_Server.exe
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Texas_Poker_Server\obj\Debug\Texas_Poker_Server.pdb
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Texas_Poker_Server\bin\Debug\Texas_Poker_Server.exe
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Texas_Poker_Server\bin\Debug\Texas_Poker_Server.pdb
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Texas_Poker_Server\obj\Debug\Texas_Poker_Server.csprojResolveAssemblyReference.cache

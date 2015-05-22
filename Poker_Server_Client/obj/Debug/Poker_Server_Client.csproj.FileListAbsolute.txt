@@ -59,3 +59,34 @@ C:\Users\Wayne\Desktop\Poker_Server_Client\Poker_Server_Client\obj\Debug\Poker_S
 C:\Users\Wayne\Desktop\Poker_Server_Client\Poker_Server_Client\obj\Debug\Poker_Server_Client.Properties.Resources.resources
 C:\Users\Wayne\Desktop\Poker_Server_Client\Poker_Server_Client\obj\Debug\Poker_Server_Client.csproj.GenerateResource.Cache
 C:\Users\Lin\Documents\Visual Studio 2013\Projects\Poker_Server_Client\Poker_Server_Client\obj\Debug\Poker_Server_Client.csprojResolveAssemblyReference.cache
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.csprojResolveAssemblyReference.cache
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Simple Styles.baml
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\UserControl1.baml
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\UserControl2.baml
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\App.baml
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\MainWindow.g.cs
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\UserControl1.g.cs
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\UserControl2.g.cs
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\App.g.cs
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client_MarkupCompile.cache
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client_MarkupCompile.lref
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.exe
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.pdb
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\table.png
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\Poker_Server_Client.exe.config
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\Poker_Server_Client.exe
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\Poker_Server_Client.pdb
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\Microsoft.Expression.Drawing.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\de\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\es\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\fr\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\it\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\ja\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\ko\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\ru\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\zh-Hans\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\bin\Debug\zh-Hant\Microsoft.Expression.Drawing.resources.dll
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\MainWindow.baml
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.g.resources
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.Properties.Resources.resources
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.csproj.GenerateResource.Cache

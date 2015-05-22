@@ -86,37 +86,61 @@ namespace Poker_Server_Client
             {
                 Updata_Inf();
                 String a = null;
-                //MessageBox.Show(Player_Inf[Player_Inf.Length - 1] + "=Wait Server");
                 byte[] data = new byte[1024];
                 int rev = client.Receive(data);
                 a = Encoding.ASCII.GetString(data, 0, rev);
                 String[] b = a.Split(' ');
-                //MessageBox.Show(a);
-                //Thread tr = new Thread(Case_Process);
-                //tr.Start();
 
-                Update_Inf(b[0],a);                                                       //更新資訊 及 處理                                        
-                Show_UI(b[0]);                                                          //更新UI
-
+                Update_Inf(b[0], a);                                                       //更新資訊 及 處理                              
                 Updata_Inf();
-                // MessageBox.Show(Player_Inf[Player_Inf.Length - 1] + "=Wait again");
                 arEvent.Set();
-                //if (Player_State == 1)
-                //    break;
+
             }
         }
 
-        public void Update_Inf(String title,String a)
+        public void Update_Inf(String title, String a)
         {
+            Package_Process pp = new Package_Process(a, client);             //處理資訊
             switch (title)
             {
                 case "Player_Card":
-                    Package_Process pp = new Package_Process(a,client);             //處理資訊
                     Player_number = pp.Player_number;
                     Player_Inf[1] = pp.Player_Inf[1];
                     Player_Inf[2] = pp.Player_Inf[2];
                     break;
+
+                case "Money_Inf":
+                    Player_money = pp.Player_money;                 
+                    break;
+
+                case "Small_Blind":
+                    Player_Big_Blid_state = 0;
+                    Big_Blind = pp.Big_Blind;
+                    Player_money -= Big_Blind / 2;
+                    tmp_Raise_money = Big_Blind / 2;
+                    break;
+
+                case "Big_Blind":
+                    Big_Blind = pp.Big_Blind;
+                    Player_money -= Big_Blind;
+                    tmp_Raise_money = Big_Blind;
+                    Player_Big_Blid_state = 1;
+                    break;
+
+                case "Normal":
+                    Player_Big_Blid_state = 2;
+                    Big_Blind = pp.Big_Blind;
+                    break;
+                case "GameRound1":
+                    Raise_money = pp.Raise_money;
+                    Need_money = pp.Need_money;
+                    break;
+
+                case "Win":
+                    Player_money = pp.Player_money;
+                    break;
             }
+            Show_UI(title);                                                            //更新UI
         }
 
         /// <summary>
@@ -162,35 +186,46 @@ namespace Poker_Server_Client
 
         private void Show_UI(String title)
         {
-            switch(title)
-            {
-                case "Player_Card":
-                    if (Player_number == 0)
-                    {
-                        this.Dispatcher.BeginInvoke((Action)delegate()
+            this.Dispatcher.BeginInvoke((Action)delegate()
                         {
-                            Server_Inf.Content = "Connect";
-                            enemy[0].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
-                            enemy[0].Visibility = System.Windows.Visibility.Visible;
-                            enemy[1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
-                            enemy[1].Visibility = System.Windows.Visibility.Visible;
-                            Player_Number_Label.Content = Player_number;
+                            switch (title)
+                            {
+                                case "Player_Card":
+                                    if (Player_number == 0)
+                                    {
+                                        Server_Inf.Content = "Connect";
+                                        enemy[0].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
+                                        enemy[0].Visibility = System.Windows.Visibility.Visible;
+                                        enemy[1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
+                                        enemy[1].Visibility = System.Windows.Visibility.Visible;
+                                        Player_Number_Label.Content = Player_number;
+                                    }
+                                    else
+                                    {
+                                        Server_Inf.Content = "Connect";
+                                        enemy[Player_number + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
+                                        enemy[Player_number + 1].Visibility = System.Windows.Visibility.Visible;
+                                        enemy[Player_number + 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
+                                        enemy[Player_number + 2].Visibility = System.Windows.Visibility.Visible;
+                                        Player_Number_Label.Content = Player_number;
+                                    }
+                                    break;
+
+                                case "Money_Inf":
+                                case "Small_Blind":
+                                case "Big_Blind":
+                                case "Normal":
+                                case "Win":
+                                    Money_Label.Content = Player_money;
+                                    break;
+                                case "GameRound1":
+                                    Need_money = Raise_money - tmp_Raise_money;
+                                    Call_Button.Content = (Need_money > 0) ? "Call" + Need_money : "Check";
+                                    Raise_Button.Content = "Raise to" + Raise_money * 2;
+                                    Button_Show("Show");
+                                    break;
+                            }
                         });
-                    }
-                    else
-                    {
-                        this.Dispatcher.BeginInvoke((Action)delegate()
-                        {
-                            Server_Inf.Content = "Connect";
-                            enemy[Player_number+1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
-                            enemy[Player_number+1].Visibility = System.Windows.Visibility.Visible;
-                            enemy[Player_number+2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
-                            enemy[Player_number+2].Visibility = System.Windows.Visibility.Visible;
-                            Player_Number_Label.Content = Player_number;
-                        });
-                    }
-                    break;
-            }
         }
 
         public void Case_Process()
@@ -415,7 +450,6 @@ namespace Poker_Server_Client
         {
             this.Dispatcher.BeginInvoke((Action)delegate()
             {
-                Money_Label.Content = Player_money;
                 //Total_money_Label.Content = total_money;
                 for (int i = 0; i < (total_Player - 1) * 2; i += 2)
                 {
@@ -477,26 +511,18 @@ namespace Poker_Server_Client
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                client.Connect(new IPEndPoint(IPAddress.Parse(Ip), Port));
-                Server_Inf.Content = "Connect";
-                Thread tr = new Thread(play_round);
-                tr.Start();
+            //try
+            //{
+            //    client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            //    client.Connect(new IPEndPoint(IPAddress.Parse(Ip), Port));
+            //    Server_Inf.Content = "Connect";
+            //    Thread tr = new Thread(play_round);
+            //    tr.Start();
                 Button_Show("Hide");
-                Dynamic_Test();
-                //play_round();
-                // RmIp和SPort分別為string和int型態, 前者為Server端的IP, 後者為Server端的Port
-                // 同 Server 端一樣要另外開一個執行緒用來等待接收來自 Server 端傳來的資料, 與Server概念同
-                //Thread SckSReceiveTd = new Thread(SckSReceiveProc);
-                //SckSReceiveTd.Start();
-                //ClientSend();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            //    Dynamic_Test();
+            //    //play_round();
+            //    // RmIp和SPort分別為string和int型態, 前者為Server端的IP, 後者為Server端的Port
+            //    // 同 Server 端一樣要另外開一個執行緒用來等待接收來自 Server 端傳來的資料, 與Server概念同
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -525,17 +551,17 @@ namespace Poker_Server_Client
         /// <param name="e"></param>
         private void Call_Button_Click(object sender, RoutedEventArgs e)
         {
+            Need_money = Raise_money - tmp_Raise_money;
             Player_money -= Need_money;
             tmp_Raise_money = Raise_money;
             //MessageBox.Show(Raise_money.ToString());
             //
             //Call_money_Label.Content = tmp_Raise_money;
-            Updata_Inf();
+            Show_UI("Money_Inf");
             byte[] Send_State = new byte[1024];
             Send_State = Encoding.ASCII.GetBytes("Call" + " " + Need_money + " " + Player_money);
             client.Send(Send_State);
             Button_Show("Hide");
-            arEvent.Set();
         }
         /// <summary>
         /// 傳送
@@ -558,10 +584,9 @@ namespace Poker_Server_Client
             //total_money += Need_money;
             tmp_Raise_money = Raise_money;
             //Call_money_Label.Content = tmp_Raise_money;
-            Updata_Inf();
-            byte[] Send_State = new byte[1024];
-            String a = "Raise" + " " + Raise_money.ToString() + " " + Player_number + " " + Need_money.ToString() + " " + Player_money;
-            Send_State = Encoding.ASCII.GetBytes(a);
+            Show_UI("Money_Inf");
+            byte[] Send_State = new byte[2048];
+            Send_State = Encoding.ASCII.GetBytes("Raise " + Raise_money.ToString() + " " + Need_money.ToString() + " " + Player_money.ToString() + " ");
             client.Send(Send_State);
             Button_Show("Hide");
             arEvent.Set();
@@ -578,6 +603,31 @@ namespace Poker_Server_Client
             client.Send(Send_State);
             Button_Show("Hide");
             arEvent.Set();
+        }
+
+        private void Connect_btn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                client.Connect(new IPEndPoint(IPAddress.Parse(Ip), Port));
+                Server_Inf.Content = "Connect";
+                Connect_btn.Content = "DisConnect";
+                Thread tr = new Thread(play_round);
+                tr.Start();
+                Button_Show("Hide");
+                Dynamic_Test();
+                //play_round();
+                // RmIp和SPort分別為string和int型態, 前者為Server端的IP, 後者為Server端的Port
+                // 同 Server 端一樣要另外開一個執行緒用來等待接收來自 Server 端傳來的資料, 與Server概念同
+                //Thread SckSReceiveTd = new Thread(SckSReceiveProc);
+                //SckSReceiveTd.Start();
+                //ClientSend();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
 
