@@ -32,8 +32,14 @@ namespace Texas_Poker_Server
                 case "Fold":
                     //Player_state.Remove(location);
                     return Raise_money.ToString() + " fold";
+                default:
+                    byte[] data = new byte[1024];
+                    data = Encoding.ASCII.GetBytes("Resend");
+                    Console.WriteLine(Encoding.ASCII.GetString(data));
+                    sClient[location].Send(data);
+                    Console.WriteLine("Send resend to{0}", location);
+                    return "GG";
             }
-            return "GG";
         }
 
     }

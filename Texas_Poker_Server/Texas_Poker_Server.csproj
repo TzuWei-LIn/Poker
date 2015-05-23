@@ -51,6 +51,7 @@
     <Compile Include="Send_Player_Money.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI_Inf.cs" />
     <Compile Include="Winner.cs" />
   </ItemGroup>
   <ItemGroup>

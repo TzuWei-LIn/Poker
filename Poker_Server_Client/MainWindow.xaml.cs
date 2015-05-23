@@ -60,6 +60,8 @@ namespace Poker_Server_Client
         protected Image[] enemy = new Image[12];
         protected Label[] enemy_Raise = new Label[6];
 
+        protected String Package_tmp = null;                        //假如收到封包不正確 將會以此資料重傳
+
         protected int total_Player = 0;                //總玩家人數
         /// <summary>
         /// 接收:
@@ -103,6 +105,18 @@ namespace Poker_Server_Client
             Package_Process pp = new Package_Process(a, client);             //處理資訊
             switch (title)
             {
+                case "Total_Money":
+                    total_money = pp.total_money;
+                    break;
+
+                case "Resend":
+                    Resend_package rp = new Resend_package(client, Package_tmp);
+                    break;
+
+                case "Enemy_Inf":
+                    total_Player = pp.total_Player;
+                    break;
+
                 case "Player_Card":
                     Player_number = pp.Player_number;
                     Player_Inf[1] = pp.Player_Inf[1];
@@ -112,6 +126,7 @@ namespace Poker_Server_Client
                 case "Money_Inf":
                 case "New_Round":
                     Player_money = pp.Player_money;
+                    total_money = 0;
                     break;
 
                 case "Small_Blind":
@@ -223,26 +238,32 @@ namespace Poker_Server_Client
                         {
                             switch (title)
                             {
+
                                 case "Player_Card":
-                                    if (Player_number == 0)
-                                    {
-                                        Server_Inf.Content = "Connect";
-                                        enemy[0].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
-                                        enemy[0].Visibility = System.Windows.Visibility.Visible;
-                                        enemy[1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
-                                        enemy[1].Visibility = System.Windows.Visibility.Visible;
-                                        Player_Number_Label.Content = Player_number;
-                                    }
-                                    else
-                                    {
-                                        Server_Inf.Content = "Connect";
-                                        enemy[Player_number * 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
-                                        enemy[Player_number * 2].Visibility = System.Windows.Visibility.Visible;
-                                        enemy[Player_number * 2 + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
-                                        enemy[Player_number * 2 + 1].Visibility = System.Windows.Visibility.Visible;
-                                        Player_Number_Label.Content = Player_number;
-                                    }
+                                    Server_Inf.Content = "Connect";
+                                    enemy[Player_number * 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
+                                    enemy[Player_number * 2].Visibility = System.Windows.Visibility.Visible;
+                                    enemy[Player_number * 2 + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
+                                    enemy[Player_number * 2 + 1].Visibility = System.Windows.Visibility.Visible;
+                                    Player_Number_Label.Content = Player_number;
                                     break;
+
+                                case "Total_Money":
+                                    Total_money_Label.Content = total_money;
+                                    break;
+
+                                case "Enemy_Inf":
+                                    for (int i = 0; i < total_Player*2;i+=2 )
+                                    {
+                                        if(Player_number*2 != i)
+                                        {
+                                            enemy[i].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
+                                            enemy[i].Visibility = System.Windows.Visibility.Visible;
+                                            enemy[i+1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
+                                            enemy[i+1].Visibility = System.Windows.Visibility.Visible;
+                                        }
+                                    }
+                                        break;
 
                                 case "Money_Inf":
                                 case "Small_Blind":
@@ -308,7 +329,9 @@ namespace Poker_Server_Client
 
                                 case "New_Round":
                                     Money_Label.Content = Player_money;
+                                    Total_money_Label.Content = total_money;
                                     Button_Show("Image_Hide");
+                                    Clean_Data();
                                     break;
                             }
                         });
@@ -537,11 +560,11 @@ namespace Poker_Server_Client
             this.Dispatcher.BeginInvoke((Action)delegate()
             {
                 //Total_money_Label.Content = total_money;
-                for (int i = 0; i < (total_Player - 1) * 2; i += 2)
-                {
-                    enemy[i].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
-                    enemy[i + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
-                }
+                //for (int i = 0; i < (total_Player - 1) * 2; i += 2)
+                //{
+                //    enemy[i].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
+                //    enemy[i + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
+                //}
             });
         }
 
@@ -648,6 +671,9 @@ namespace Poker_Server_Client
             //Call_money_Label.Content = tmp_Raise_money;
             Show_UI("Money_Inf");
             byte[] Send_State = new byte[1024];
+
+            Package_tmp = "Call" + " " + Need_money + " " + Player_money;
+
             Send_State = Encoding.ASCII.GetBytes("Call" + " " + Need_money + " " + Player_money);
             client.Send(Send_State);
             Button_Show("Hide");
@@ -675,6 +701,9 @@ namespace Poker_Server_Client
             //Call_money_Label.Content = tmp_Raise_money;
             Show_UI("Money_Inf");
             byte[] Send_State = new byte[2048];
+
+            Package_tmp = "Raise " + Raise_money.ToString() + " " + Need_money.ToString() + " " + Player_money.ToString() + " ";
+
             Send_State = Encoding.ASCII.GetBytes("Raise " + Raise_money.ToString() + " " + Need_money.ToString() + " " + Player_money.ToString() + " ");
             client.Send(Send_State);
             Button_Show("Hide");
@@ -685,7 +714,10 @@ namespace Poker_Server_Client
         {
             Updata_Inf();
             byte[] Send_State = new byte[1024];
+
+            Package_tmp = "Fold" + " " + Raise_money.ToString() + " " + Player_money + " " + Player_number;
             Send_State = Encoding.ASCII.GetBytes("Fold" + " " + Raise_money.ToString() + " " + Player_money + " " + Player_number);
+
             Player_State = 1;
             Image_card_1.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
             Image_card_2.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));

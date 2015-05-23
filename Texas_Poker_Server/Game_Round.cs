@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Threading;
 
 namespace Texas_Poker_Server
 {
@@ -14,8 +15,9 @@ namespace Texas_Poker_Server
 
         public void GameRound(int Raise_Money)
         {
-            for (int Game_Round = 1; Game_Round < 5; Game_Round++)
+            for (int Game_Round = 1; Game_Round < 5 ; Game_Round++)
             {
+                UI_Inf ui = new UI_Inf("Total_Money");
                 int Raise_position_tmp = Raise_position;
                 call_ppl = 0;
                 if (Game_Round != 1)
@@ -45,22 +47,10 @@ namespace Texas_Poker_Server
                     Console.WriteLine("Size = {0}", Player_state.Count());
                 }//end while (end for call)
                 if (Player_state.Count < 2)
-                {
-                    Console.WriteLine("WIN");
                     break;
-                }
-                    Console.WriteLine("Finish GameROund{0}", Game_Round);
+                Console.WriteLine("Finish GameROund{0}", Game_Round);
             }//end for Game_round
-            if (Player_state.Count > 1)
-            {
                 Winner wr = new Winner();
-                //處理排的大小  
-            }
-            else
-            {
-                Player_money[Player_state[0]] += Total_money;
-                Send_Package(Player_state[0]);
-            }
         }
 
         public override void Send_Package(int location)
@@ -80,6 +70,7 @@ namespace Texas_Poker_Server
 
             //int tt = sClient[location].Receive(data);                        //receive "OK"
             String test = Encoding.ASCII.GetString(data, 0, (int)sClient[location].Receive(data));
+            Thread.Sleep(300);
             //if (test.Equals("OK"))
             //    Console.WriteLine("OKOKOKOK");
 
@@ -87,6 +78,10 @@ namespace Texas_Poker_Server
             int rev = sClient[location].Receive(data);                        //receive Call or not...      
             Button_Process bp = new Button_Process();
             String a = bp.Event_Process(Encoding.ASCII.GetString(data, 0, rev), Raise_Money, location);
+
+            //while(a.Equals("GG"))
+            //    a = bp.Event_Process(Encoding.ASCII.GetString(data, 0, rev), Raise_Money, location);
+
             String[] b = a.Split(' ');
             Raise_Money = int.Parse(b[0]);
             if (b[1].Equals("call"))

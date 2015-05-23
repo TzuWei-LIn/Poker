@@ -39,9 +39,10 @@ namespace Poker_Server_Client
         public int tmp_Raise_money = 0;        //暫存下注金額
         public int Need_money = 0;                 //玩家須下注金額
         protected int max_leangh = 0;                 //debug
+        protected String Package_tmp = null;                    //假如收到封包不正確 將會以此資料重傳
 
 
-        protected int total_Player = 0;                //總玩家人數
+        public int total_Player = 0;                //總玩家人數
 
 
 

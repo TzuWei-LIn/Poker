@@ -15,11 +15,19 @@ namespace Poker_Server_Client
         {
             //MainWindow mw = new MainWindow();
             String[] b = rev_message.Split(' ');
-            Back(client);
-            Thread.Sleep(500);
+            Back(client,b[0]);
+            Thread.Sleep(800);
             
             switch(b[0])
             {
+                case "Total_Money":
+                    total_money = int.Parse(b[1]);
+                    break;
+
+                case "Enemy_Inf":
+                    total_Player = int.Parse(b[1]);
+                    break;
+
                 case "Player_Card":
                     Player_number = int.Parse(b[3]);
                     Player_Inf[1] = b[1];
@@ -102,10 +110,10 @@ namespace Poker_Server_Client
         /// 回傳至Server 証明收到了
         /// </summary>
         /// <param name="client"></param>
-        public override void Back(Socket client)
+        public new void Back(Socket client,String a)
         {
             byte[] data = new byte[1024];
-            data = Encoding.ASCII.GetBytes("OK");
+            data = Encoding.ASCII.GetBytes("OK-a");
             client.Send(data);
         }
     }
