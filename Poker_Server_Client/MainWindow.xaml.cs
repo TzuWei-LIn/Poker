@@ -110,7 +110,8 @@ namespace Poker_Server_Client
                     break;
 
                 case "Money_Inf":
-                    Player_money = pp.Player_money;                 
+                case "New_Round":
+                    Player_money = pp.Player_money;
                     break;
 
                 case "Small_Blind":
@@ -136,8 +137,40 @@ namespace Poker_Server_Client
                     Need_money = pp.Need_money;
                     break;
 
+                case "GameRound2":
+                case "GameRound3":
+                case "GameRound4":
+                    Game_State = pp.Game_State;
+                    Raise_money = pp.Raise_money;
+                    Need_money = Raise_money - tmp_Raise_money;
+                    break;
+
                 case "Win":
                     Player_money = pp.Player_money;
+                    break;
+
+                case "Tie":
+                    Player_money = pp.Player_money;
+                    break;
+
+                case "Lose":
+                    break;
+
+                case "Public_Card_1-3":
+                    Public_Card[0] = pp.Public_Card[0];
+                    Public_Card[1] = pp.Public_Card[1];
+                    Public_Card[2] = pp.Public_Card[2];
+                    tmp_Raise_money = 0;
+                    break;
+
+                case "Public_Card_4":
+                    Public_Card[3] = pp.Public_Card[3];
+                    tmp_Raise_money = 0;
+                    break;
+
+                case "Public_Card_5":
+                    Public_Card[4] = pp.Public_Card[4];
+                    tmp_Raise_money = 0;
                     break;
             }
             Show_UI(title);                                                            //更新UI
@@ -203,10 +236,10 @@ namespace Poker_Server_Client
                                     else
                                     {
                                         Server_Inf.Content = "Connect";
-                                        enemy[Player_number + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
-                                        enemy[Player_number + 1].Visibility = System.Windows.Visibility.Visible;
-                                        enemy[Player_number + 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
-                                        enemy[Player_number + 2].Visibility = System.Windows.Visibility.Visible;
+                                        enemy[Player_number * 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
+                                        enemy[Player_number * 2].Visibility = System.Windows.Visibility.Visible;
+                                        enemy[Player_number * 2 + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
+                                        enemy[Player_number * 2 + 1].Visibility = System.Windows.Visibility.Visible;
                                         Player_Number_Label.Content = Player_number;
                                     }
                                     break;
@@ -218,11 +251,64 @@ namespace Poker_Server_Client
                                 case "Win":
                                     Money_Label.Content = Player_money;
                                     break;
+
+                                case "Tie":
+                                    Clean_Data();
+                                    Button_Show("Image_Hide");
+                                    Button_Show("Hide");
+                                    break;
+
+                                case "Lose":
+                                    Clean_Data();
+                                    Button_Show("Image_Hide");
+                                    Button_Show("Hide");
+                                    break;
+
                                 case "GameRound1":
                                     Need_money = Raise_money - tmp_Raise_money;
                                     Call_Button.Content = (Need_money > 0) ? "Call" + Need_money : "Check";
                                     Raise_Button.Content = "Raise to" + Raise_money * 2;
                                     Button_Show("Show");
+                                    break;
+
+                                case "GameRound2":
+                                case "GameRound3":
+                                case "GameRound4":
+                                    if (Raise_money != 0)
+                                    {
+                                        Call_Button.Content = "Call " + (Raise_money - tmp_Raise_money);
+                                        Raise_Button.Content = "Raise to" + (2 * Raise_money);
+                                    }
+                                    else
+                                    {
+                                        Call_Button.Content = "Check";
+                                        Raise_Button.Content = "Raise" + 100;
+                                    }
+                                    Button_Show("Show");
+                                    break;
+
+                                case "Public_Card_1-3":
+                                    Public_card_image1.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[0] + ".GIF"));
+                                    Public_card_image1.Visibility = System.Windows.Visibility.Visible;
+                                    Public_card_image2.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[1] + ".GIF"));
+                                    Public_card_image2.Visibility = System.Windows.Visibility.Visible;
+                                    Public_card_image3.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[2] + ".GIF"));
+                                    Public_card_image3.Visibility = System.Windows.Visibility.Visible;
+                                    break;
+
+                                case "Public_Card_4":
+                                    Public_card_image4.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[3] + ".GIF"));
+                                    Public_card_image4.Visibility = System.Windows.Visibility.Visible;
+                                    break;
+
+                                case "Public_Card_5":
+                                    Public_card_image5.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[4] + ".GIF"));
+                                    Public_card_image5.Visibility = System.Windows.Visibility.Visible;
+                                    break;
+
+                                case "New_Round":
+                                    Money_Label.Content = Player_money;
+                                    Button_Show("Image_Hide");
                                     break;
                             }
                         });
@@ -309,9 +395,8 @@ namespace Poker_Server_Client
                     });
                     //MessageBox.Show("Wait ur answer");
                     Button_Show("Show");
-
-                    arEvent.WaitOne();
                     break;
+
                 case "GameRound2":
                 case "GameRound3":
                 case "GameRound4":
@@ -337,6 +422,7 @@ namespace Poker_Server_Client
                     Button_Show("Show");
                     arEvent.WaitOne();
                     break;
+
                 case "Public_Card_1-3":
                     Public_Card[0] = int.Parse(Inf[1]);
                     Public_Card[1] = int.Parse(Inf[2]);
@@ -488,8 +574,11 @@ namespace Poker_Server_Client
                    Public_card_image3.Visibility = System.Windows.Visibility.Hidden;
                    Public_card_image4.Visibility = System.Windows.Visibility.Hidden;
                    Public_card_image5.Visibility = System.Windows.Visibility.Hidden;
-                   Image_card_1.Visibility = System.Windows.Visibility.Hidden;
-                   Image_card_2.Visibility = System.Windows.Visibility.Hidden;
+                   Fold_Button.Visibility = System.Windows.Visibility.Hidden;
+                   Call_Button.Visibility = System.Windows.Visibility.Hidden;
+                   Raise_Button.Visibility = System.Windows.Visibility.Hidden;
+                   for (int i = 0; i < enemy.Length; i++)
+                       enemy[i].Visibility = System.Windows.Visibility.Hidden;
                });
             }
         }
@@ -518,7 +607,7 @@ namespace Poker_Server_Client
             //    Server_Inf.Content = "Connect";
             //    Thread tr = new Thread(play_round);
             //    tr.Start();
-                Button_Show("Hide");
+            Button_Show("Hide");
             //    Dynamic_Test();
             //    //play_round();
             //    // RmIp和SPort分別為string和int型態, 前者為Server端的IP, 後者為Server端的Port

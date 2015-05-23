@@ -46,6 +46,8 @@
     <Compile Include="Game_Round.cs" />
     <Compile Include="GetsCard.cs" />
     <Compile Include="Listen.cs" />
+    <Compile Include="PokerAlgorithm.cs" />
+    <Compile Include="Public_Card.cs" />
     <Compile Include="Send_Player_Money.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

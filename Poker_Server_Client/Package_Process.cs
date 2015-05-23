@@ -56,8 +56,43 @@ namespace Poker_Server_Client
                     Raise_money = int.Parse(b[1]);
                     break;
 
+                case "GameRound2":
+                case "GameRound3":
+                case "GameRound4":
+                    Game_State = b[0];
+                    Raise_money = int.Parse(b[1]);
+                    Need_money = Raise_money - tmp_Raise_money;
+                    break;
 
                 case "Win":
+                    Player_money = int.Parse(b[1]);
+                    break;
+
+                case "Tie":    
+                    Player_money = int.Parse(Inf[2]);                  
+                    break;
+
+                case "Lose":
+                    break;
+
+                case "Public_Card_1-3":
+                    Public_Card[0] = int.Parse(b[1]);
+                    Public_Card[1] = int.Parse(b[2]);
+                    Public_Card[2] = int.Parse(b[3]);
+                    tmp_Raise_money = 0;
+                    break;
+
+                case "Public_Card_4":
+                    Public_Card[3] = int.Parse(b[1]);
+                    Raise_money = 0;
+                    break;
+
+                case "Public_Card_5":
+                    Public_Card[4] = int.Parse(b[1]);
+                    Raise_money = 0;
+                    break;
+
+                case "New_Round":
                     Player_money = int.Parse(b[1]);
                     break;
             }

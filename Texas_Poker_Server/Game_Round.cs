@@ -19,14 +19,24 @@ namespace Texas_Poker_Server
                 int Raise_position_tmp = Raise_position;
                 call_ppl = 0;
                 if (Game_Round != 1)
+                {
                     Raise_Money = 0;
+                    if (Game_Round == 2)
+                    {
+                        Public_Card pc = new Public_Card(1);
+                    }
+                    else
+                    {
+                        Public_Card pc = new Public_Card(Game_Round);
+                    }
+                }
                 else
                     for (int p = 0; p < Now_sit.Length; p++)
                         if (Now_sit[p] == 1)
                             Player_state.Add(p);
                 while (call_ppl != Now_connect_ppl && Player_state.Count > 1)
                 {
-                    for (int i = Raise_position_tmp; i < Now_sit.Length + Raise_position_tmp && Player_state.Count >1; i++)
+                    for (int i = Raise_position_tmp; i < Now_sit.Length + Raise_position_tmp && Player_state.Count >1 && call_ppl != Now_connect_ppl; i++)
                     {
                         int j = i % Now_sit.Length;
                         if (Now_sit[j] == 1 && Player_state.Contains(j))
@@ -35,18 +45,22 @@ namespace Texas_Poker_Server
                     Console.WriteLine("Size = {0}", Player_state.Count());
                 }//end while (end for call)
                 if (Player_state.Count < 2)
+                {
                     Console.WriteLine("WIN");
                     break;
-                Console.ReadKey();
+                }
+                    Console.WriteLine("Finish GameROund{0}", Game_Round);
             }//end for Game_round
             if (Player_state.Count > 1)
             {
-                //Winner wr = new Winner(10);
-                //處理排的大小
+                Winner wr = new Winner();
+                //處理排的大小  
             }
             else
+            {
                 Player_money[Player_state[0]] += Total_money;
-            Send_Package(Player_state[0]);
+                Send_Package(Player_state[0]);
+            }
         }
 
         public override void Send_Package(int location)
@@ -78,9 +92,12 @@ namespace Texas_Poker_Server
             if (b[1].Equals("call"))
                 call_ppl++;
             else if (b[1].Equals("fold"))
+            {
                 Player_state.Remove(location);
+                Now_sit[location] = 2;
+            }
             else
-                call_ppl = 0;
+                call_ppl = 1;
             Console.WriteLine("Call ppl = {0}", call_ppl);
             return Raise_Money;
 
