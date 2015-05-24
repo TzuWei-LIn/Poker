@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texas_Poker_Server
 {
-    class UI_Inf : Server
+    class UI_Inf : Button_Process
     {
         public UI_Inf(String a)
         {
@@ -22,6 +22,23 @@ namespace Texas_Poker_Server
                         if (Now_sit[i] != 0)
                             Send_Package(i, "Total_Money" + " " + Total_money.ToString());
                         break;
+            }
+        }
+
+        public UI_Inf(int location,String a)
+        {
+            switch(a)
+            {
+                case "Call":
+                    for (int i = 0; i < Now_sit.Length; i++)
+                        if (Now_sit[i] != 0)
+                            Send_Package(i, "Call_Inf" + " " + Raise_Money.ToString() +" " + location.ToString() + " " + Player_money[location]);
+                    break;
+                case "Raise":                  
+                    for (int i = 0; i < Now_sit.Length; i++)
+                        if (Now_sit[i] != 0)
+                            Send_Package(i, "Raise_Inf" + " " + Raise_Money.ToString() + " " + location.ToString() + " " + Player_money[location]);
+                    break;
 
             }
         }

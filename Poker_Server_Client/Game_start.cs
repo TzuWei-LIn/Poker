@@ -30,6 +30,7 @@ namespace Poker_Server_Client
         public int Player_money = 0;         //玩家起始擁有金額
         public int Player_Big_Blid_state = -1;   //判斷使用者是否為大小盲注 -> 0.小盲1.大盲2.不是
         public int Raise_money = 0;                 //下注金額
+        public int Who_Raise = 0;                    //誰下注的 用於 UI
 
 
         public int Player_State = 0;                //1=不玩

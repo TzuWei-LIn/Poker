@@ -90,3 +90,5 @@ C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Ma
 C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.g.resources
 C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.Properties.Resources.resources
 C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Poker_Server_Client.csproj.GenerateResource.Cache
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Log_UI.baml
+C:\Users\Lin\Documents\Texas_Poker_Server\Poker\Poker_Server_Client\obj\Debug\Log_UI.g.cs

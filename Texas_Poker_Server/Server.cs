@@ -32,6 +32,7 @@ namespace Texas_Poker_Server
         protected static int Big_Blind = 100;                                         //大盲注
         protected static int[] Player_Raise_Money = new int[10];              //每個玩家下注金額(更新資訊用)
         protected static int Total_money = 0;                                        //獎池
+        protected static int Raise_Money = Big_Blind;                           //下注金額
         protected static int[] Public_card = new int[5];                              //公牌
         protected static int card_public_total = 0;                                   //公牌張數
         protected static int public_card_score = 0;                                 //公牌分數
@@ -39,6 +40,7 @@ namespace Texas_Poker_Server
         protected static int[] score = new int[10];                                      //玩家分數
         protected static String[] score_result = new string[10];                  //玩家牌形
         protected static int max_score { get; set; }                                     //結束所有回合後 最高分數
+        protected static String[] AC_money = new string[10];                    //紀錄玩家帳號 已變更新資料庫
 
         static void Main(string[] args)
         {
@@ -63,7 +65,7 @@ namespace Texas_Poker_Server
                 Blind bd = new Blind();
                 Total_money = Big_Blind + (Big_Blind / 2);
                 Game_Round GR = new Game_Round();
-                GR.GameRound(Big_Blind);
+                GR.GameRound();
                 Console.WriteLine("Finish Game");
                 EndGame();
                 Clean_Data();

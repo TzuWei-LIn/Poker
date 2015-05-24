@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account_Process.cs" />
     <Compile Include="Blind.cs" />
     <Compile Include="Button_Process.cs" />
     <Compile Include="Game_Round.cs" />

@@ -13,7 +13,7 @@ namespace Texas_Poker_Server
         protected int call_ppl { get; set; }
         protected List<int> Player_state = new List<int>();
 
-        public void GameRound(int Raise_Money)
+        public void GameRound()
         {
             for (int Game_Round = 1; Game_Round < 5 ; Game_Round++)
             {
@@ -68,16 +68,16 @@ namespace Texas_Poker_Server
             Console.WriteLine(Encoding.ASCII.GetString(data));
             sClient[location].Send(data);
 
-            //int tt = sClient[location].Receive(data);                        //receive "OK"
             String test = Encoding.ASCII.GetString(data, 0, (int)sClient[location].Receive(data));
-            Thread.Sleep(300);
-            //if (test.Equals("OK"))
-            //    Console.WriteLine("OKOKOKOK");
+
+            Array.Clear(data, 0, data.Length);
+            data = Encoding.ASCII.GetBytes("WaitAnswer");
+            sClient[location].Send(data);
 
             data = new byte[1024];
             int rev = sClient[location].Receive(data);                        //receive Call or not...      
             Button_Process bp = new Button_Process();
-            String a = bp.Event_Process(Encoding.ASCII.GetString(data, 0, rev), Raise_Money, location);
+            String a = bp.Event_Process(Encoding.ASCII.GetString(data, 0, rev), location);
 
             //while(a.Equals("GG"))
             //    a = bp.Event_Process(Encoding.ASCII.GetString(data, 0, rev), Raise_Money, location);

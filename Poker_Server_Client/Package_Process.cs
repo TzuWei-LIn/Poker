@@ -16,10 +16,20 @@ namespace Poker_Server_Client
             //MainWindow mw = new MainWindow();
             String[] b = rev_message.Split(' ');
             Back(client,b[0]);
-            Thread.Sleep(800);
+            Thread.Sleep(500);
             
             switch(b[0])
             {
+                case "Call_Inf":
+                    Raise_money = int.Parse(b[1]);
+                    Who_Raise = int.Parse(b[2]);
+                    break;
+
+                case "Raise_Inf":
+                    Raise_money = int.Parse(b[1]);
+                    Who_Raise = int.Parse(b[2]);
+                    break;
+
                 case "Total_Money":
                     total_money = int.Parse(b[1]);
                     break;

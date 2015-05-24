@@ -38,6 +38,8 @@
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,6 +58,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Game_start.cs" />
+    <Compile Include="Log_UI.xaml.cs">
+      <DependentUpon>Log_UI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Package_Process.cs" />
     <Compile Include="Resend_package.cs" />
     <Compile Include="UserControl1.xaml.cs">
@@ -64,6 +69,10 @@
     <Compile Include="UserControl2.xaml.cs">
       <DependentUpon>UserControl2.xaml</DependentUpon>
     </Compile>
+    <Page Include="Log_UI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

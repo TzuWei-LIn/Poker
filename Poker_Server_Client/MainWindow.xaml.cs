@@ -48,7 +48,7 @@ namespace Poker_Server_Client
         protected int Player_money = 0;         //玩家起始擁有金額
         protected int Player_Big_Blid_state = -1;   //判斷使用者是否為大小盲注 -> 0.小盲1.大盲2.不是
         protected int Raise_money = 0;                 //下注金額
-
+        protected int Who_Raise = 0;                    //誰下注的 用於 UI
 
         protected int Player_State = 0;                //1=不玩
         protected String Game_State = null;                  //遊戲狀態第幾回合
@@ -63,6 +63,13 @@ namespace Poker_Server_Client
         protected String Package_tmp = null;                        //假如收到封包不正確 將會以此資料重傳
 
         protected int total_Player = 0;                //總玩家人數
+
+
+        public AutoResetEvent arEvent2 = new AutoResetEvent(false);
+
+        public String Account = "";
+        public String PassWord = "";
+
         /// <summary>
         /// 接收:
         ///     1.大小盲注狀態  -> 扣錢
@@ -91,11 +98,14 @@ namespace Poker_Server_Client
                 byte[] data = new byte[1024];
                 int rev = client.Receive(data);
                 a = Encoding.ASCII.GetString(data, 0, rev);
-                String[] b = a.Split(' ');
-
-                Update_Inf(b[0], a);                                                       //更新資訊 及 處理                              
-                Updata_Inf();
-                arEvent.Set();
+                ////防止封包接收不完整
+                if (!a.Equals("WaitAnswer"))
+                {
+                    String[] b = a.Split(' ');
+                    Update_Inf(b[0], a);                                                       //更新資訊 及 處理                              
+                    Updata_Inf();
+                    arEvent.Set();
+                }
 
             }
         }
@@ -105,6 +115,16 @@ namespace Poker_Server_Client
             Package_Process pp = new Package_Process(a, client);             //處理資訊
             switch (title)
             {
+                case "Call_Inf":
+                    Raise_money = pp.Raise_money;
+                    Who_Raise = pp.Who_Raise;
+                    break;
+
+                case "Raise_Inf":
+                    Raise_money = pp.Raise_money;
+                    Who_Raise = pp.Who_Raise;
+                    break;
+
                 case "Total_Money":
                     total_money = pp.total_money;
                     break;
@@ -248,22 +268,32 @@ namespace Poker_Server_Client
                                     Player_Number_Label.Content = Player_number;
                                     break;
 
+                                case "Call_Inf":
+                                    enemy_Raise[Who_Raise].Content = Raise_money;
+                                    enemy_Raise[Who_Raise].Visibility = System.Windows.Visibility.Visible;
+                                    break;
+
+                                case "Raise_Inf":
+                                    enemy_Raise[Who_Raise].Content = Raise_money;
+                                    enemy_Raise[Who_Raise].Visibility = System.Windows.Visibility.Visible;
+                                    break;
+
                                 case "Total_Money":
                                     Total_money_Label.Content = total_money;
                                     break;
 
                                 case "Enemy_Inf":
-                                    for (int i = 0; i < total_Player*2;i+=2 )
+                                    for (int i = 0; i < total_Player * 2; i += 2)
                                     {
-                                        if(Player_number*2 != i)
+                                        if (Player_number * 2 != i)
                                         {
                                             enemy[i].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
                                             enemy[i].Visibility = System.Windows.Visibility.Visible;
-                                            enemy[i+1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
-                                            enemy[i+1].Visibility = System.Windows.Visibility.Visible;
+                                            enemy[i + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
+                                            enemy[i + 1].Visibility = System.Windows.Visibility.Visible;
                                         }
                                     }
-                                        break;
+                                    break;
 
                                 case "Money_Inf":
                                 case "Small_Blind":
@@ -286,25 +316,20 @@ namespace Poker_Server_Client
                                     break;
 
                                 case "GameRound1":
+                                    Raise_Block.Text = (Need_money > 0) ? (Raise_money * 2).ToString() : "100";
+                                    Raise_Button.Content = "Raise to" + Raise_Block;
                                     Need_money = Raise_money - tmp_Raise_money;
                                     Call_Button.Content = (Need_money > 0) ? "Call" + Need_money : "Check";
-                                    Raise_Button.Content = "Raise to" + Raise_money * 2;
                                     Button_Show("Show");
                                     break;
 
                                 case "GameRound2":
                                 case "GameRound3":
                                 case "GameRound4":
-                                    if (Raise_money != 0)
-                                    {
-                                        Call_Button.Content = "Call " + (Raise_money - tmp_Raise_money);
-                                        Raise_Button.Content = "Raise to" + (2 * Raise_money);
-                                    }
-                                    else
-                                    {
-                                        Call_Button.Content = "Check";
-                                        Raise_Button.Content = "Raise" + 100;
-                                    }
+                                    Button_Show("Enemy_label");
+                                    Call_Button.Content = (Raise_money != 0) ? "Call " + (Raise_money - tmp_Raise_money) : "Check";
+                                    Raise_Block.Text = (Raise_money != 0) ? (Raise_money * 2).ToString() : "100";
+                                    Raise_Button.Content = "Raise to" + Raise_Block;
                                     Button_Show("Show");
                                     break;
 
@@ -570,40 +595,40 @@ namespace Poker_Server_Client
 
         public void Button_Show(String a)
         {
-            if (a.Equals("Hide"))
-            {
-                this.Dispatcher.BeginInvoke((Action)delegate()
-                {
-                    Fold_Button.Visibility = System.Windows.Visibility.Hidden;
-                    Call_Button.Visibility = System.Windows.Visibility.Hidden;
-                    Raise_Button.Visibility = System.Windows.Visibility.Hidden;
-                });
-            }
-            else
-            {
-                this.Dispatcher.BeginInvoke((Action)delegate()
-                {
-                    Fold_Button.Visibility = System.Windows.Visibility.Visible;
-                    Call_Button.Visibility = System.Windows.Visibility.Visible;
-                    Raise_Button.Visibility = System.Windows.Visibility.Visible;
-                });
-            }
-            if (a.Equals("Image_Hide"))
-            {
-                this.Dispatcher.BeginInvoke((Action)delegate()
+            this.Dispatcher.BeginInvoke((Action)delegate()
                {
-                   Public_card_image1.Visibility = System.Windows.Visibility.Hidden;
-                   Public_card_image2.Visibility = System.Windows.Visibility.Hidden;
-                   Public_card_image3.Visibility = System.Windows.Visibility.Hidden;
-                   Public_card_image4.Visibility = System.Windows.Visibility.Hidden;
-                   Public_card_image5.Visibility = System.Windows.Visibility.Hidden;
-                   Fold_Button.Visibility = System.Windows.Visibility.Hidden;
-                   Call_Button.Visibility = System.Windows.Visibility.Hidden;
-                   Raise_Button.Visibility = System.Windows.Visibility.Hidden;
-                   for (int i = 0; i < enemy.Length; i++)
-                       enemy[i].Visibility = System.Windows.Visibility.Hidden;
+                   if (a.Equals("Hide"))
+                   {
+
+                       Fold_Button.Visibility = System.Windows.Visibility.Hidden;
+                       Call_Button.Visibility = System.Windows.Visibility.Hidden;
+                       Raise_Button.Visibility = System.Windows.Visibility.Hidden;
+                   }
+                   else
+                   {
+                       Fold_Button.Visibility = System.Windows.Visibility.Visible;
+                       Call_Button.Visibility = System.Windows.Visibility.Visible;
+                       Raise_Button.Visibility = System.Windows.Visibility.Visible;
+                   }
+                   if (a.Equals("Image_Hide"))
+                   {
+                       Public_card_image1.Visibility = System.Windows.Visibility.Hidden;
+                       Public_card_image2.Visibility = System.Windows.Visibility.Hidden;
+                       Public_card_image3.Visibility = System.Windows.Visibility.Hidden;
+                       Public_card_image4.Visibility = System.Windows.Visibility.Hidden;
+                       Public_card_image5.Visibility = System.Windows.Visibility.Hidden;
+                       Fold_Button.Visibility = System.Windows.Visibility.Hidden;
+                       Call_Button.Visibility = System.Windows.Visibility.Hidden;
+                       Raise_Button.Visibility = System.Windows.Visibility.Hidden;
+                       for (int i = 0; i < enemy.Length; i++)
+                           enemy[i].Visibility = System.Windows.Visibility.Hidden;
+                       for (int i = 0; i < enemy_Raise.Length; i++)
+                           enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
+                   }
+                   if (a.Equals("Enemy_label"))
+                       for (int i = 0; i < enemy_Raise.Length; i++)
+                           enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
                });
-            }
         }
 
         public void Clean_Data()
@@ -617,7 +642,6 @@ namespace Poker_Server_Client
             total_money = 0;
             Player_State = 0;                //1=不玩
             Game_State = null;                  //遊戲狀態第幾回合
-            String[] Inf;
             tmp_Raise_money = 0;        //暫存下注金額
         }
 
@@ -690,10 +714,7 @@ namespace Poker_Server_Client
         /// <param name="e"></param>
         private void Raise_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Raise_money == 0)
-                Raise_money = 100;
-            else
-                Raise_money *= 2;
+            Raise_money = int.Parse(Raise_Block.Text);
             Need_money = Raise_money - tmp_Raise_money;
             Player_money -= Need_money;
             //total_money += Need_money;
@@ -730,14 +751,72 @@ namespace Poker_Server_Client
         {
             try
             {
-                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                client.Connect(new IPEndPoint(IPAddress.Parse(Ip), Port));
+                Button_Show("Hide");
+
+                while (true)
+                {
+                    Log_UI log = new Log_UI();
+                    log.ShowDialog();
+                    Account = log.Account;
+                    PassWord = log.PassWord;
+                    //////讀取帳號密碼
+
+
+                    client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    client.Connect(new IPEndPoint(IPAddress.Parse(Ip), Port));
+
+
+                    //////完成連線
+
+                    byte[] data = new byte[1024];
+                    data = Encoding.ASCII.GetBytes(log.States + " " + Account + " " + PassWord);
+                    Console.WriteLine(Encoding.ASCII.GetString(data));
+                    client.Send(data);
+                    Array.Clear(data, 0, data.Length);
+                    int rev = client.Receive(data);
+
+                    StringBuilder sb = new StringBuilder();
+                    String a = Encoding.ASCII.GetString(data, 0, rev);
+                    sb.Append(a);
+                    String[] b = a.Split(' ');
+                    /////防止封包接收不完整
+                    while (!b[b.Length - 1].Equals("end"))
+                    {
+                        data = new byte[1024];
+                        rev = client.Receive(data);
+                        a = Encoding.ASCII.GetString(data, 0, rev);
+                        sb.Append(a);
+                        b = sb.ToString().Split(' ');
+                    }
+
+                    if (b[0].Equals("Login_Sucess"))
+                    {
+                        Player_money = int.Parse(b[1]);
+                        MessageBox.Show("Login Sucess");
+                        Back(client);
+                        break;
+                    }
+                    else if (b[0].Equals("Register_Sucess"))
+                    {
+                        MessageBox.Show("Register Sucess");
+                        Back(client);
+                    }
+                    else
+                    {
+                        MessageBox.Show("log Fail");
+                        Back(client);
+                    }
+                }//end while
+
+
                 Server_Inf.Content = "Connect";
                 Connect_btn.Content = "DisConnect";
+
                 Thread tr = new Thread(play_round);
                 tr.Start();
-                Button_Show("Hide");
+
                 Dynamic_Test();
+
                 //play_round();
                 // RmIp和SPort分別為string和int型態, 前者為Server端的IP, 後者為Server端的Port
                 // 同 Server 端一樣要另外開一個執行緒用來等待接收來自 Server 端傳來的資料, 與Server概念同
@@ -750,7 +829,12 @@ namespace Poker_Server_Client
                 MessageBox.Show(ex.ToString());
             }
         }
-
+        public void Back(Socket client)
+        {
+            byte[] data = new byte[1024];
+            data = Encoding.ASCII.GetBytes("OK");
+            client.Send(data);
+        }
 
     }
 }

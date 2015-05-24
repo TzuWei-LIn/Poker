@@ -117,18 +117,8 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Rectangle HorizontalAlignment="Left" Height="34" Margin="209,455,0,0" RadiusY="4.5" RadiusX="4.5" Stroke="White" VerticalAlignment="Top" Width="74">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="White" Offset="1"/>
-                    <GradientStop Color="#FF438555"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <TextBlock HorizontalAlignment="Left" Height="25" Margin="218,464,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="56" Text="20" TextAlignment="Center" FontSize="13.333"/>
         <Image x:Name="Image_card_1" HorizontalAlignment="Left" Height="100" Margin="272,278,0,0" VerticalAlignment="Top" Width="100"/>
         <Image x:Name="Image_card_2" HorizontalAlignment="Left" Height="100" Margin="416,278,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button x:Name="Play" Content="Play" HorizontalAlignment="Left" Margin="641,430,0,0" VerticalAlignment="Top" Width="75" Click="Play_Click"/>
         <Label x:Name="Money_Label" Content="Label" HorizontalAlignment="Left" Margin="534,10,0,0" VerticalAlignment="Top"/>
         <Image x:Name="Enemy_Image_1" HorizontalAlignment="Left" Height="56" Margin="580,203,0,0" VerticalAlignment="Top" Width="44"/>
         <Image x:Name="Enemy_Image_2" HorizontalAlignment="Left" Height="56" Margin="641,203,0,0" VerticalAlignment="Top" Width="44"/>
@@ -147,13 +137,14 @@
         <Image x:Name="Enemy_Image_8" HorizontalAlignment="Left" Height="56" Margin="85,131,0,0" VerticalAlignment="Top" Width="44"/>
         <Image x:Name="Enemy_Image_9" HorizontalAlignment="Left" Height="56" Margin="85,239,0,0" VerticalAlignment="Top" Width="44"/>
         <Image x:Name="Enemy_Image_10" HorizontalAlignment="Left" Height="56" Margin="134,239,0,0" VerticalAlignment="Top" Width="44"/>
-        <Label x:Name="Call_money_Label_0" Content="Label" HorizontalAlignment="Left" Margin="365,306,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Call_money_Label_0" Content="Label" HorizontalAlignment="Left" Margin="365,290,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_1" Content="Label" HorizontalAlignment="Left" Margin="526,221,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_2" Content="Label" HorizontalAlignment="Left" Margin="481,154,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_3" Content="Label" HorizontalAlignment="Left" Margin="272,146,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_4" Content="Label" HorizontalAlignment="Left" Margin="201,151,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_5" Content="Label" HorizontalAlignment="Left" Margin="201,260,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Connect_btn" Content="Connect" HorizontalAlignment="Left" Margin="32,451,0,0" VerticalAlignment="Top" Width="75" Click="Connect_btn_Click" FontFamily="Microsoft JhengHei UI"/>
+        <Button x:Name="Connect_btn" Content="Connect" HorizontalAlignment="Left" Margin="31,430,0,0" VerticalAlignment="Top" Width="75" Click="Connect_btn_Click" FontFamily="Microsoft JhengHei UI"/>
+        <TextBox x:Name="Raise_Block" HorizontalAlignment="Left" Height="38" Margin="216,456,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="58" RenderTransformOrigin="0.534,0.316"/>
 
     </Grid>
 </Window>
