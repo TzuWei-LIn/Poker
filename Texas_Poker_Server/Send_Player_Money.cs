@@ -21,9 +21,9 @@ namespace Texas_Poker_Server
 
             byte[] Money = new byte[1024];
             if (Player_money[location] == 0)
-                Money = Encoding.ASCII.GetBytes("Money_Inf" + " " + "3000");
+                Money = Encoding.ASCII.GetBytes("Money_Inf" + " " + "3000" + " end");
             else
-                Money = Encoding.ASCII.GetBytes("Money_Inf" + " " + Player_money[location].ToString());
+                Money = Encoding.ASCII.GetBytes("Money_Inf" + " " + Player_money[location].ToString() + " end");
             Console.WriteLine("Send money to{0} ={1}", location, Player_money[location]);
             sClient[location].Send(Money);
 

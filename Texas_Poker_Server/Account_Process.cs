@@ -56,7 +56,7 @@ namespace Texas_Poker_Server
                     fs.Seek(0, SeekOrigin.End);
                     byte[] data = new byte[1024];
 
-                    data = Encoding.ASCII.GetBytes("\n" + b[1] + " " + b[2] + " " + 3000);
+                    data = Encoding.ASCII.GetBytes(b[1] + " " + b[2] + " " + 3000 + " end");
                     fs.Write(data, 0, data.Length);
                     fs.Close();
                     return "Register_Sucess";

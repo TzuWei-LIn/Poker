@@ -64,13 +64,13 @@ namespace Texas_Poker_Server
                 if (Now_sit[i] != 0)
                 {
                     byte[] Send_Winner_Inf = new byte[1024];
-                    Send_Winner_Inf = Encoding.ASCII.GetBytes(((score[i] == max_score) ? (Winner.Count >= 2) ? "Tie" + " " + sb.ToString() + " " + (Player_money[i] += (Total_money / 2)).ToString() : "Win" + " " +  (Player_money[i] += Total_money).ToString() : "Lose" + " " + sb.ToString()));
+                    Send_Winner_Inf = Encoding.ASCII.GetBytes(((score[i] == max_score) ? (Winner.Count >= 2) ? "Tie" + " " + sb.ToString() + " " + (Player_money[i] += (Total_money / 2)).ToString() + " end" : "Win" + " " +  (Player_money[i] += Total_money).ToString() + " end" : "Lose" + " " + sb.ToString() + " end"));
                     Account_Process ac = new Account_Process();
                     ac.UpdateAccount(i);
                     sClient[i].Send(Send_Winner_Inf);
 
                     sClient[i].Receive(Send_Winner_Inf);
-                    Thread.Sleep(500);
+                    //Thread.Sleep(500);
                 }
             }
         }

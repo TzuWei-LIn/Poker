@@ -36,7 +36,7 @@ namespace Texas_Poker_Server
                     return Raise_Money.ToString() + " fold";
                 default:
                     byte[] data = new byte[1024];
-                    data = Encoding.ASCII.GetBytes("Resend");
+                    data = Encoding.ASCII.GetBytes("Resend end");
                     Console.WriteLine(Encoding.ASCII.GetString(data));
                     sClient[location].Send(data);
                     Console.WriteLine("Send resend to{0}", location);

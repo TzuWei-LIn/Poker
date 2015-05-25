@@ -93,17 +93,17 @@ namespace Poker_Server_Client
             client.NoDelay = false;
             while (true)
             {
-                Updata_Inf();
                 String a = null;
                 byte[] data = new byte[1024];
-                int rev = client.Receive(data);
-                a = Encoding.ASCII.GetString(data, 0, rev);
-                ////防止封包接收不完整
-                if (!a.Equals("WaitAnswer"))
+                a = Package_Rev();
+
+                //MessageBox.Show(a);
+
+                //////防止封包接收不完整
+                if (!a.Equals("WaitAnswer end"))
                 {
                     String[] b = a.Split(' ');
                     Update_Inf(b[0], a);                                                       //更新資訊 及 處理                              
-                    Updata_Inf();
                     arEvent.Set();
                 }
 
@@ -121,6 +121,11 @@ namespace Poker_Server_Client
                     break;
 
                 case "Raise_Inf":
+                    Raise_money = pp.Raise_money;
+                    Who_Raise = pp.Who_Raise;
+                    break;
+
+                case "Blind_Inf":
                     Raise_money = pp.Raise_money;
                     Who_Raise = pp.Who_Raise;
                     break;
@@ -259,23 +264,15 @@ namespace Poker_Server_Client
                             switch (title)
                             {
 
-                                case "Player_Card":
-                                    Server_Inf.Content = "Connect";
-                                    enemy[Player_number * 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
-                                    enemy[Player_number * 2].Visibility = System.Windows.Visibility.Visible;
-                                    enemy[Player_number * 2 + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
-                                    enemy[Player_number * 2 + 1].Visibility = System.Windows.Visibility.Visible;
-                                    Player_Number_Label.Content = Player_number;
-                                    break;
-
                                 case "Call_Inf":
+                                case "Raise_Inf":
+                                case "Blind_Inf":
                                     enemy_Raise[Who_Raise].Content = Raise_money;
                                     enemy_Raise[Who_Raise].Visibility = System.Windows.Visibility.Visible;
                                     break;
 
-                                case "Raise_Inf":
-                                    enemy_Raise[Who_Raise].Content = Raise_money;
-                                    enemy_Raise[Who_Raise].Visibility = System.Windows.Visibility.Visible;
+                                case "Enemy_Hide":
+                                    Button_Show("Enemy_label");
                                     break;
 
                                 case "Total_Money":
@@ -315,6 +312,15 @@ namespace Poker_Server_Client
                                     Button_Show("Hide");
                                     break;
 
+                                case "Player_Card":
+                                    Server_Inf.Content = "Connect";
+                                    enemy[Player_number * 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
+                                    enemy[Player_number * 2].Visibility = System.Windows.Visibility.Visible;
+                                    enemy[Player_number * 2 + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
+                                    enemy[Player_number * 2 + 1].Visibility = System.Windows.Visibility.Visible;
+                                    Player_Number_Label.Content = Player_number;
+                                    break;
+
                                 case "GameRound1":
                                     Raise_Block.Text = (Need_money > 0) ? (Raise_money * 2).ToString() : "100";
                                     Raise_Button.Content = "Raise to" + Raise_Block;
@@ -326,7 +332,6 @@ namespace Poker_Server_Client
                                 case "GameRound2":
                                 case "GameRound3":
                                 case "GameRound4":
-                                    Button_Show("Enemy_label");
                                     Call_Button.Content = (Raise_money != 0) ? "Call " + (Raise_money - tmp_Raise_money) : "Check";
                                     Raise_Block.Text = (Raise_money != 0) ? (Raise_money * 2).ToString() : "100";
                                     Raise_Button.Content = "Raise to" + Raise_Block;
@@ -362,236 +367,222 @@ namespace Poker_Server_Client
                         });
         }
 
-        public void Case_Process()
-        {
-            switch (Inf[0])
-            {
+        //public void Case_Process()
+        //{
+        //    switch (Inf[0])
+        //    {
 
-                case "Money_Inf":
-                    Player_money = int.Parse(Inf[1]);
-                    Updata_Inf();
-                    break;
-                case "Small_Blind":
-                    Player_Big_Blid_state = 0;
-                    Big_Blind = int.Parse(Inf[1]);
-                    total_Player = int.Parse(Inf[Inf.Length - 1]);
-                    Player_money -= Big_Blind / 2;
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        //Call_money_Label.Content = Big_Blind / 2;
-                    });
-                    tmp_Raise_money = Big_Blind / 2;
-                    byte[] resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
+        //        case "Money_Inf":
+        //            Player_money = int.Parse(Inf[1]);
+        //            Updata_Inf();
+        //            break;
+        //        case "Small_Blind":
+        //            Player_Big_Blid_state = 0;
+        //            Big_Blind = int.Parse(Inf[1]);
+        //            total_Player = int.Parse(Inf[Inf.Length - 1]);
+        //            Player_money -= Big_Blind / 2;
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                //Call_money_Label.Content = Big_Blind / 2;
+        //            });
+        //            tmp_Raise_money = Big_Blind / 2;
+        //            byte[] resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
 
-                case "Big_Blind":
-                    Big_Blind = int.Parse(Inf[1]);
-                    total_Player = int.Parse(Inf[Inf.Length - 1]);
-                    Player_money -= Big_Blind;
-                    tmp_Raise_money = Big_Blind;
-                    Player_Big_Blid_state = 1;
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        //Call_money_Label.Content = Big_Blind;
-                    });
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
+        //        case "Big_Blind":
+        //            Big_Blind = int.Parse(Inf[1]);
+        //            total_Player = int.Parse(Inf[Inf.Length - 1]);
+        //            Player_money -= Big_Blind;
+        //            tmp_Raise_money = Big_Blind;
+        //            Player_Big_Blid_state = 1;
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                //Call_money_Label.Content = Big_Blind;
+        //            });
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
 
-                case "Normal":
-                    Player_Big_Blid_state = 2;
-                    Big_Blind = int.Parse(Inf[1]);
-                    total_Player = int.Parse(Inf[Inf.Length - 1]);
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
+        //        case "Normal":
+        //            Player_Big_Blid_state = 2;
+        //            Big_Blind = int.Parse(Inf[1]);
+        //            total_Player = int.Parse(Inf[Inf.Length - 1]);
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
 
-                case "Player_Card":
-                    Player_number = int.Parse(Inf[3]);
-                    Player_Inf[1] = Inf[1];
-                    Player_Inf[2] = Inf[2];
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        Server_Inf.Content = "Connect";
-                        Image_card_1.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
-                        Image_card_1.Visibility = System.Windows.Visibility.Visible;
-                        Image_card_2.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
-                        Image_card_2.Visibility = System.Windows.Visibility.Visible;
+        //        case "Player_Card":
+        //            Player_number = int.Parse(Inf[3]);
+        //            Player_Inf[1] = Inf[1];
+        //            Player_Inf[2] = Inf[2];
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                Server_Inf.Content = "Connect";
+        //                Image_card_1.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
+        //                Image_card_1.Visibility = System.Windows.Visibility.Visible;
+        //                Image_card_2.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
+        //                Image_card_2.Visibility = System.Windows.Visibility.Visible;
 
-                        Player_Number_Label.Content = Player_number;
-                    });
+        //                Player_Number_Label.Content = Player_number;
+        //            });
 
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
 
-                case "GameRound1":
-                    Game_State = Inf[0];
-                    Raise_money = int.Parse(Inf[1]);
-                    Need_money = Raise_money - tmp_Raise_money;
-                    //total_money = int.Parse(Inf[2]);
-                    Updata_Inf();
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        Call_Button.Content = (Need_money > 0) ? "Call" + Need_money : "Check";
-                        Raise_Button.Content = "Raise to" + Raise_money * 2;
-                    });
-                    //MessageBox.Show("Wait ur answer");
-                    Button_Show("Show");
-                    break;
+        //        case "GameRound1":
+        //            Game_State = Inf[0];
+        //            Raise_money = int.Parse(Inf[1]);
+        //            Need_money = Raise_money - tmp_Raise_money;
+        //            //total_money = int.Parse(Inf[2]);
+        //            Updata_Inf();
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                Call_Button.Content = (Need_money > 0) ? "Call" + Need_money : "Check";
+        //                Raise_Button.Content = "Raise to" + Raise_money * 2;
+        //            });
+        //            //MessageBox.Show("Wait ur answer");
+        //            Button_Show("Show");
+        //            break;
 
-                case "GameRound2":
-                case "GameRound3":
-                case "GameRound4":
-                    Game_State = Inf[0];
-                    Raise_money = int.Parse(Inf[1]);
-                    //total_money = int.Parse(Inf[2]);
-                    Need_money = Raise_money - tmp_Raise_money;
-                    Updata_Inf();
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        if (Raise_money != 0)
-                        {
-                            Call_Button.Content = "Call " + (Raise_money - tmp_Raise_money);
-                            Raise_Button.Content = "Raise to" + (2 * Raise_money);
-                        }
-                        else
-                        {
-                            Call_Button.Content = "Check";
-                            Raise_Button.Content = "Raise" + 100;
-                        }
-                    });
-                    //MessageBox.Show("Wait 2 round");
-                    Button_Show("Show");
-                    arEvent.WaitOne();
-                    break;
+        //        case "GameRound2":
+        //        case "GameRound3":
+        //        case "GameRound4":
+        //            Game_State = Inf[0];
+        //            Raise_money = int.Parse(Inf[1]);
+        //            //total_money = int.Parse(Inf[2]);
+        //            Need_money = Raise_money - tmp_Raise_money;
+        //            Updata_Inf();
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                if (Raise_money != 0)
+        //                {
+        //                    Call_Button.Content = "Call " + (Raise_money - tmp_Raise_money);
+        //                    Raise_Button.Content = "Raise to" + (2 * Raise_money);
+        //                }
+        //                else
+        //                {
+        //                    Call_Button.Content = "Check";
+        //                    Raise_Button.Content = "Raise" + 100;
+        //                }
+        //            });
+        //            Button_Show("Show");
+        //            arEvent.WaitOne();
+        //            break;
 
-                case "Public_Card_1-3":
-                    Public_Card[0] = int.Parse(Inf[1]);
-                    Public_Card[1] = int.Parse(Inf[2]);
-                    Public_Card[2] = int.Parse(Inf[3]);
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        Public_card_image1.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[0] + ".GIF"));
-                        Public_card_image1.Visibility = System.Windows.Visibility.Visible;
-                        Public_card_image2.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[1] + ".GIF"));
-                        Public_card_image2.Visibility = System.Windows.Visibility.Visible;
+        //        case "Public_Card_1-3":
+        //            Public_Card[0] = int.Parse(Inf[1]);
+        //            Public_Card[1] = int.Parse(Inf[2]);
+        //            Public_Card[2] = int.Parse(Inf[3]);
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                Public_card_image1.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[0] + ".GIF"));
+        //                Public_card_image1.Visibility = System.Windows.Visibility.Visible;
+        //                Public_card_image2.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[1] + ".GIF"));
+        //                Public_card_image2.Visibility = System.Windows.Visibility.Visible;
 
-                        Public_card_image3.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[2] + ".GIF"));
-                        Public_card_image3.Visibility = System.Windows.Visibility.Visible;
-                    });
-                    tmp_Raise_money = 0;
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
-                case "Public_Card_4":
-                    Public_Card[3] = int.Parse(Inf[1]);
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        Public_card_image4.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[3] + ".GIF"));
-                        Public_card_image4.Visibility = System.Windows.Visibility.Visible;
-                    });
-                    tmp_Raise_money = 0;
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
-                case "Public_Card_5":
-                    Public_Card[4] = int.Parse(Inf[1]);
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        Public_card_image5.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[4] + ".GIF"));
-                        Public_card_image5.Visibility = System.Windows.Visibility.Visible;
-                    });
-                    tmp_Raise_money = 0;
-                    MessageBox.Show("MaxLength = " + max_leangh.ToString());
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
-                case "Win":
-                    MessageBox.Show("U Win");
-                    Player_money = int.Parse(Inf[2]);
-                    Clean_Data();
-                    Button_Show("Image_Hide");
-                    Button_Show("Hide");
-                    break;
-                case "Tie":
-                    MessageBox.Show("Tie");
-                    Player_money = int.Parse(Inf[2]);
-                    Clean_Data();
-                    Button_Show("Image_Hide");
-                    Button_Show("Hide");
-                    break;
-                case "Lose":
-                    MessageBox.Show("U Lose");
-                    Clean_Data();
-                    Button_Show("Image_Hide");
-                    Button_Show("Hide");
-                    break;
-                case "Total_Money_Inf":
-                    total_money = int.Parse(Inf[Inf.Length - 1]);
-                    this.Dispatcher.BeginInvoke((Action)delegate()
-                    {
-                        Total_money_Label.Content = total_money;
-                        for (int i = 0; i < enemy_Raise.Length; i++)
-                            enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
-                    });
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
-                case "Player_Raise_Money":
-                    //MessageBox.Show("Number ="+Inf[1]);
-                    if (int.Parse(Inf[1]) == Player_number)
-                    {
-                        this.Dispatcher.BeginInvoke((Action)delegate()
-                        {
-                            if (int.Parse(Inf[2]) != 0)
-                            {
-                                enemy_Raise[0].Visibility = System.Windows.Visibility.Visible;
-                                enemy_Raise[0].Content = Inf[2];
-                            }
-                        });
-                    }
-                    else
-                    {
-                        this.Dispatcher.BeginInvoke((Action)delegate()
-                     {
-                         if (int.Parse(Inf[2]) != 0)
-                         {
-                             enemy_Raise[(int.Parse(Inf[1])) % total_Player].Visibility = System.Windows.Visibility.Visible;
-                             enemy_Raise[(int.Parse(Inf[1])) % total_Player].Content = Inf[2];
-                         }
-                     });
-                    }
-                    resp = new byte[1024];
-                    resp = Encoding.ASCII.GetBytes("OK");
-                    client.Send(resp);
-                    break;
-                case "Test":
-                    break;
-            }
-        }
-
-        public void Updata_Inf()
-        {
-            this.Dispatcher.BeginInvoke((Action)delegate()
-            {
-                //Total_money_Label.Content = total_money;
-                //for (int i = 0; i < (total_Player - 1) * 2; i += 2)
-                //{
-                //    enemy[i].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
-                //    enemy[i + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\6655.jpg"));
-                //}
-            });
-        }
+        //                Public_card_image3.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[2] + ".GIF"));
+        //                Public_card_image3.Visibility = System.Windows.Visibility.Visible;
+        //            });
+        //            tmp_Raise_money = 0;
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
+        //        case "Public_Card_4":
+        //            Public_Card[3] = int.Parse(Inf[1]);
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                Public_card_image4.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[3] + ".GIF"));
+        //                Public_card_image4.Visibility = System.Windows.Visibility.Visible;
+        //            });
+        //            tmp_Raise_money = 0;
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
+        //        case "Public_Card_5":
+        //            Public_Card[4] = int.Parse(Inf[1]);
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                Public_card_image5.Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Public_Card[4] + ".GIF"));
+        //                Public_card_image5.Visibility = System.Windows.Visibility.Visible;
+        //            });
+        //            tmp_Raise_money = 0;
+        //            MessageBox.Show("MaxLength = " + max_leangh.ToString());
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
+        //        case "Win":
+        //            MessageBox.Show("U Win");
+        //            Player_money = int.Parse(Inf[2]);
+        //            Clean_Data();
+        //            Button_Show("Image_Hide");
+        //            Button_Show("Hide");
+        //            break;
+        //        case "Tie":
+        //            MessageBox.Show("Tie");
+        //            Player_money = int.Parse(Inf[2]);
+        //            Clean_Data();
+        //            Button_Show("Image_Hide");
+        //            Button_Show("Hide");
+        //            break;
+        //        case "Lose":
+        //            MessageBox.Show("U Lose");
+        //            Clean_Data();
+        //            Button_Show("Image_Hide");
+        //            Button_Show("Hide");
+        //            break;
+        //        case "Total_Money_Inf":
+        //            total_money = int.Parse(Inf[Inf.Length - 1]);
+        //            this.Dispatcher.BeginInvoke((Action)delegate()
+        //            {
+        //                Total_money_Label.Content = total_money;
+        //                for (int i = 0; i < enemy_Raise.Length; i++)
+        //                    enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
+        //            });
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
+        //        case "Player_Raise_Money":
+        //            //MessageBox.Show("Number ="+Inf[1]);
+        //            if (int.Parse(Inf[1]) == Player_number)
+        //            {
+        //                this.Dispatcher.BeginInvoke((Action)delegate()
+        //                {
+        //                    if (int.Parse(Inf[2]) != 0)
+        //                    {
+        //                        enemy_Raise[0].Visibility = System.Windows.Visibility.Visible;
+        //                        enemy_Raise[0].Content = Inf[2];
+        //                    }
+        //                });
+        //            }
+        //            else
+        //            {
+        //                this.Dispatcher.BeginInvoke((Action)delegate()
+        //             {
+        //                 if (int.Parse(Inf[2]) != 0)
+        //                 {
+        //                     enemy_Raise[(int.Parse(Inf[1])) % total_Player].Visibility = System.Windows.Visibility.Visible;
+        //                     enemy_Raise[(int.Parse(Inf[1])) % total_Player].Content = Inf[2];
+        //                 }
+        //             });
+        //            }
+        //            resp = new byte[1024];
+        //            resp = Encoding.ASCII.GetBytes("OK");
+        //            client.Send(resp);
+        //            break;
+        //        case "Test":
+        //            break;
+        //    }
+        //}
 
         public void Button_Show(String a)
         {
@@ -603,14 +594,8 @@ namespace Poker_Server_Client
                        Fold_Button.Visibility = System.Windows.Visibility.Hidden;
                        Call_Button.Visibility = System.Windows.Visibility.Hidden;
                        Raise_Button.Visibility = System.Windows.Visibility.Hidden;
-                   }
-                   else
-                   {
-                       Fold_Button.Visibility = System.Windows.Visibility.Visible;
-                       Call_Button.Visibility = System.Windows.Visibility.Visible;
-                       Raise_Button.Visibility = System.Windows.Visibility.Visible;
-                   }
-                   if (a.Equals("Image_Hide"))
+                   }                  
+                   else if (a.Equals("Image_Hide"))
                    {
                        Public_card_image1.Visibility = System.Windows.Visibility.Hidden;
                        Public_card_image2.Visibility = System.Windows.Visibility.Hidden;
@@ -625,9 +610,16 @@ namespace Poker_Server_Client
                        for (int i = 0; i < enemy_Raise.Length; i++)
                            enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
                    }
-                   if (a.Equals("Enemy_label"))
+                   else if (a.Equals("Enemy_label"))
                        for (int i = 0; i < enemy_Raise.Length; i++)
                            enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
+
+                   else
+                   {
+                       Fold_Button.Visibility = System.Windows.Visibility.Visible;
+                       Call_Button.Visibility = System.Windows.Visibility.Visible;
+                       Raise_Button.Visibility = System.Windows.Visibility.Visible;
+                   }
                });
         }
 
@@ -647,28 +639,12 @@ namespace Poker_Server_Client
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            //    client.Connect(new IPEndPoint(IPAddress.Parse(Ip), Port));
-            //    Server_Inf.Content = "Connect";
-            //    Thread tr = new Thread(play_round);
-            //    tr.Start();
             Button_Show("Hide");
-            //    Dynamic_Test();
-            //    //play_round();
-            //    // RmIp和SPort分別為string和int型態, 前者為Server端的IP, 後者為Server端的Port
-            //    // 同 Server 端一樣要另外開一個執行緒用來等待接收來自 Server 端傳來的資料, 與Server概念同
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
 
-        }
-
-        private void Play_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Sucess");
         }
 
         private void Window_Closed_1(object sender, EventArgs e)
@@ -733,7 +709,6 @@ namespace Poker_Server_Client
 
         private void Fold_Button_Click(object sender, RoutedEventArgs e)
         {
-            Updata_Inf();
             byte[] Send_State = new byte[1024];
 
             Package_tmp = "Fold" + " " + Raise_money.ToString() + " " + Player_money + " " + Player_number;
@@ -751,8 +726,9 @@ namespace Poker_Server_Client
         {
             try
             {
+                Dynamic_Test();
+                Button_Show("Enemy_label");
                 Button_Show("Hide");
-
                 while (true)
                 {
                     Log_UI log = new Log_UI();
@@ -773,8 +749,8 @@ namespace Poker_Server_Client
                     Console.WriteLine(Encoding.ASCII.GetString(data));
                     client.Send(data);
                     Array.Clear(data, 0, data.Length);
-                    int rev = client.Receive(data);
 
+                    int rev = client.Receive(data);
                     StringBuilder sb = new StringBuilder();
                     String a = Encoding.ASCII.GetString(data, 0, rev);
                     sb.Append(a);
@@ -788,6 +764,8 @@ namespace Poker_Server_Client
                         sb.Append(a);
                         b = sb.ToString().Split(' ');
                     }
+
+                    //MessageBox.Show(sb.ToString());
 
                     if (b[0].Equals("Login_Sucess"))
                     {
@@ -815,8 +793,6 @@ namespace Poker_Server_Client
                 Thread tr = new Thread(play_round);
                 tr.Start();
 
-                Dynamic_Test();
-
                 //play_round();
                 // RmIp和SPort分別為string和int型態, 前者為Server端的IP, 後者為Server端的Port
                 // 同 Server 端一樣要另外開一個執行緒用來等待接收來自 Server 端傳來的資料, 與Server概念同
@@ -834,6 +810,25 @@ namespace Poker_Server_Client
             byte[] data = new byte[1024];
             data = Encoding.ASCII.GetBytes("OK");
             client.Send(data);
+        }
+
+        public String  Package_Rev()
+        {
+            int rev = client.Receive(data);
+            StringBuilder sb = new StringBuilder();
+            String a = Encoding.ASCII.GetString(data, 0, rev);
+            sb.Append(a);
+            String[] b = a.Split(' ');
+            /////防止封包接收不完整
+            while (!b[b.Length - 1].Equals("end"))
+            {
+                data = new byte[1024];
+                rev = client.Receive(data);
+                a = Encoding.ASCII.GetString(data, 0, rev);
+                sb.Append(a);
+                b = sb.ToString().Split(' ');
+            }
+            return sb.ToString();
         }
 
     }

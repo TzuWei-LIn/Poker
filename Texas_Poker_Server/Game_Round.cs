@@ -22,6 +22,7 @@ namespace Texas_Poker_Server
                 call_ppl = 0;
                 if (Game_Round != 1)
                 {
+                    ui = new UI_Inf("Enemy_Hide");
                     Raise_Money = 0;
                     if (Game_Round == 2)
                     {
@@ -56,7 +57,7 @@ namespace Texas_Poker_Server
         public override void Send_Package(int location)
         {
             byte[] data = new byte[1024];
-            data = Encoding.ASCII.GetBytes("Win " + Player_money[location]);
+            data = Encoding.ASCII.GetBytes("Win " + Player_money[location] + " end");
             Console.WriteLine(Encoding.ASCII.GetString(data));
             sClient[location].Send(data);
         }
@@ -64,14 +65,14 @@ namespace Texas_Poker_Server
         public new int Send_Package(int location, int Game_Round, int Raise_Money)
         {
             byte[] data = new byte[1024];
-            data = Encoding.ASCII.GetBytes("GameRound" + Game_Round.ToString() + " " + Raise_Money.ToString());
+            data = Encoding.ASCII.GetBytes("GameRound" + Game_Round.ToString() + " " + Raise_Money.ToString() + " end");
             Console.WriteLine(Encoding.ASCII.GetString(data));
             sClient[location].Send(data);
 
             String test = Encoding.ASCII.GetString(data, 0, (int)sClient[location].Receive(data));
 
             Array.Clear(data, 0, data.Length);
-            data = Encoding.ASCII.GetBytes("WaitAnswer");
+            data = Encoding.ASCII.GetBytes("WaitAnswer end");
             sClient[location].Send(data);
 
             data = new byte[1024];

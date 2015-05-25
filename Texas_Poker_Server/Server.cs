@@ -97,7 +97,7 @@ namespace Texas_Poker_Server
                 if (Now_sit[i] != 0)
                 {
                     byte[] data = new byte[1024];
-                    data = Encoding.ASCII.GetBytes("New_Round" + " " + Player_money[i].ToString());
+                    data = Encoding.ASCII.GetBytes("New_Round" + " " + Player_money[i].ToString() + " end");
                     Console.WriteLine(Encoding.ASCII.GetString(data));
                     sClient[i].Send(data);
 

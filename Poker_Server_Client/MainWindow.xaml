@@ -32,7 +32,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <TextBox x:Name="Message_Box" HorizontalAlignment="Left" Height="105" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Margin="10,10,0,0"/>
+        <TextBox x:Name="Message_Box" HorizontalAlignment="Left" Height="49" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" Margin="10,10,0,0"/>
         <Label x:Name="Server_Inf" Content="Label" HorizontalAlignment="Left" Margin="661.906,0,0,0" VerticalAlignment="Top"/>
         <Button x:Name="Raise_Button" HorizontalAlignment="Left" Margin="457.063,377.729,0,0" VerticalAlignment="Top" Width="100.752" RenderTransformOrigin="0.469,0.513" Height="57.512" Content="raise to double" FontFamily="Copperplate Gothic Bold" FontSize="14.667" Click="Raise_Button_Click">
             <Button.RenderTransform>
@@ -137,7 +137,7 @@
         <Image x:Name="Enemy_Image_8" HorizontalAlignment="Left" Height="56" Margin="85,131,0,0" VerticalAlignment="Top" Width="44"/>
         <Image x:Name="Enemy_Image_9" HorizontalAlignment="Left" Height="56" Margin="85,239,0,0" VerticalAlignment="Top" Width="44"/>
         <Image x:Name="Enemy_Image_10" HorizontalAlignment="Left" Height="56" Margin="134,239,0,0" VerticalAlignment="Top" Width="44"/>
-        <Label x:Name="Call_money_Label_0" Content="Label" HorizontalAlignment="Left" Margin="365,290,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Call_money_Label_0" Content="Label" HorizontalAlignment="Left" Margin="365,277,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_1" Content="Label" HorizontalAlignment="Left" Margin="526,221,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_2" Content="Label" HorizontalAlignment="Left" Margin="481,154,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_3" Content="Label" HorizontalAlignment="Left" Margin="272,146,0,0" VerticalAlignment="Top"/>

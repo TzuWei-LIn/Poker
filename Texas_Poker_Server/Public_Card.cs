@@ -49,7 +49,7 @@ namespace Texas_Poker_Server
                 if (Now_sit[i] == 1)
                 {
                     byte[] data = new byte[1024];
-                    data = Encoding.ASCII.GetBytes("Public_Card_1-3" + " " + Public_card[0].ToString() + " " + Public_card[1].ToString() + " " + Public_card[2].ToString());
+                    data = Encoding.ASCII.GetBytes("Public_Card_1-3" + " " + Public_card[0].ToString() + " " + Public_card[1].ToString() + " " + Public_card[2].ToString() + " end");
                     Console.WriteLine(Encoding.ASCII.GetString(data));
                     sClient[i].Send(data);
 
@@ -66,7 +66,7 @@ namespace Texas_Poker_Server
                 if (Now_sit[i] == 1)
                 {
                     byte[] data = new byte[1024];
-                    data = Encoding.ASCII.GetBytes("Public_Card_" + count.ToString() + " " + Public_card[count-1].ToString());
+                    data = Encoding.ASCII.GetBytes("Public_Card_" + count.ToString() + " " + Public_card[count-1].ToString() + " end");
                     Console.WriteLine(Encoding.ASCII.GetString(data));
                     sClient[i].Send(data);
 
