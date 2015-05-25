@@ -38,11 +38,11 @@ namespace Texas_Poker_Server
         public  override void Send_Package(int location)
         {
             byte[] data = new byte[1024];
-            data = Encoding.ASCII.GetBytes("Player_Card" + " " + User_card[location, 0].ToString() + " " + User_card[location, 1].ToString() + " " +location.ToString() + " " + "end");
+            data = Encoding.ASCII.GetBytes("Player_Card" + " " + User_card[location, 0].ToString() + " " + User_card[location, 1].ToString() + " " +location.ToString() + " end");
             Console.WriteLine(Encoding.ASCII.GetString(data));
             sClient[location].Send(data);
 
-            sClient[location].Receive(data);
+            Package_Rev(location);
             Console.WriteLine("Send card to{0}", location);
         }
 

@@ -87,6 +87,7 @@ namespace Texas_Poker_Server
          public_card_result = null;                          //公牌牌形
         score = new int[10];                                      //玩家分數
         score_result = new string[10];                  //玩家牌形
+        Raise_Money = Big_Blind;
         max_score = 0;                                     //結束所有回合後 最高分數
         }
 
@@ -101,7 +102,8 @@ namespace Texas_Poker_Server
                     Console.WriteLine(Encoding.ASCII.GetString(data));
                     sClient[i].Send(data);
 
-                    sClient[i].Receive(data);
+                    Package_Rev2(i);
+
                     Console.WriteLine("Send Finish to{0}", i);
                 }
             }
@@ -115,6 +117,48 @@ namespace Texas_Poker_Server
         protected virtual void Send_Package(int location, int Game_Round, int Raise_Money)
         {
 
+        }
+
+        public static String Package_Rev2(int location)
+        {
+            byte[] data = new byte[1024];
+            int rev = sClient[location].Receive(data);
+            StringBuilder sb = new StringBuilder();
+            String a = Encoding.ASCII.GetString(data, 0, rev);
+            sb.Append(a);
+            String[] b = a.Split(' ');
+            /////防止封包接收不完整
+            while (!b[b.Length - 1].Equals("end"))
+            {
+                data = new byte[1024];
+                rev = sClient[location].Receive(data);
+                a = Encoding.ASCII.GetString(data, 0, rev);
+                sb.Append(a);
+                b = sb.ToString().Split(' ');
+            }
+            return sb.ToString();
+        }
+
+        public virtual String Package_Rev(int location)
+        {
+            byte[] data = new byte[1024];
+            int rev = sClient[location].Receive(data);
+            StringBuilder sb = new StringBuilder();
+            String a = Encoding.ASCII.GetString(data, 0, rev);
+            sb.Append(a);
+            String[] b = sb.ToString().Split(' ');
+            /////防止封包接收不完整
+            while (!b[b.Length - 1].Equals("end"))
+            {
+                data = new byte[1024];
+                rev = sClient[location].Receive(data);
+                a = Encoding.ASCII.GetString(data, 0, rev);
+                sb.Append(a);
+                b = sb.ToString().Split(' ');
+            }
+            Console.WriteLine("AAA = {0}", sb.ToString());
+            Thread.Sleep(100);
+            return sb.ToString();
         }
 
     }

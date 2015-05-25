@@ -69,16 +69,14 @@ namespace Texas_Poker_Server
             Console.WriteLine(Encoding.ASCII.GetString(data));
             sClient[location].Send(data);
 
-            String test = Encoding.ASCII.GetString(data, 0, (int)sClient[location].Receive(data));
+            Package_Rev(location);
 
             Array.Clear(data, 0, data.Length);
             data = Encoding.ASCII.GetBytes("WaitAnswer end");
             sClient[location].Send(data);
 
-            data = new byte[1024];
-            int rev = sClient[location].Receive(data);                        //receive Call or not...      
             Button_Process bp = new Button_Process();
-            String a = bp.Event_Process(Encoding.ASCII.GetString(data, 0, rev), location);
+            String a = bp.Event_Process(Package_Rev(location), location);
 
             //while(a.Equals("GG"))
             //    a = bp.Event_Process(Encoding.ASCII.GetString(data, 0, rev), Raise_Money, location);

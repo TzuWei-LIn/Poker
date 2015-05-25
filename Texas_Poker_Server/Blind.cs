@@ -35,7 +35,9 @@ namespace Texas_Poker_Server
                     else
                         data = Encoding.ASCII.GetBytes("Normal" + " " + Big_Blind.ToString() + " " + j.ToString()+ " end");
                     sClient[j].Send(data);
-                    sClient[j].Receive(data);
+
+                    Package_Rev(j);
+
                     Console.WriteLine("Send Blind to{0}", j);
                     //Thread.Sleep(500);
                 }

@@ -145,6 +145,7 @@
         <Label x:Name="Call_money_Label_5" Content="Label" HorizontalAlignment="Left" Margin="201,260,0,0" VerticalAlignment="Top"/>
         <Button x:Name="Connect_btn" Content="Connect" HorizontalAlignment="Left" Margin="31,430,0,0" VerticalAlignment="Top" Width="75" Click="Connect_btn_Click" FontFamily="Microsoft JhengHei UI"/>
         <TextBox x:Name="Raise_Block" HorizontalAlignment="Left" Height="38" Margin="216,456,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="58" RenderTransformOrigin="0.534,0.316"/>
+        <Label x:Name="Timer_label" Content="Label" HorizontalAlignment="Left" Margin="31,85,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

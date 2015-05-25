@@ -27,7 +27,7 @@ namespace Texas_Poker_Server
             Console.WriteLine("Send money to{0} ={1}", location, Player_money[location]);
             sClient[location].Send(Money);
 
-            sClient[location].Receive(Money);
+            Package_Rev(location);
         }
 
     }

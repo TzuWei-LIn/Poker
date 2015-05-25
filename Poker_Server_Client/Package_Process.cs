@@ -118,6 +118,7 @@ namespace Poker_Server_Client
 
                 case "New_Round":
                     Player_money = int.Parse(b[1]);
+                    Clean_Data();
                     break;
             }
         }
@@ -129,7 +130,7 @@ namespace Poker_Server_Client
         public new void Back(Socket client,String a)
         {
             byte[] data = new byte[1024];
-            data = Encoding.ASCII.GetBytes("OK-a");
+            data = Encoding.ASCII.GetBytes("OK end");
             client.Send(data);
         }
     }

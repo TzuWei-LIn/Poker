@@ -46,7 +46,20 @@ namespace Poker_Server_Client
         public int total_Player = 0;                //總玩家人數
 
 
-
+        public void Clean_Data()
+        {
+            Player_Inf = new string[4];                    //0.rdy 1.玩家牌1 2.玩家牌2 3.玩家編號
+            Public_Card = new int[5];
+            Big_Blind = 0;               //盲注金額
+            Call_money = 0;          //call money if u want to play
+            Player_Big_Blid_state = -1;   //判斷使用者是否為大小盲注 -> 0.小盲1.大盲2.不是
+            Raise_money = 0;                 //下注金額
+            total_money = 0;
+            Need_money = 0;
+            Player_State = 0;                //1=不玩
+            Game_State = null;                  //遊戲狀態第幾回合
+            tmp_Raise_money = 0;        //暫存下注金額
+        }
         public virtual void Back(Socket client)
         {
             byte[] data = new byte[1024];

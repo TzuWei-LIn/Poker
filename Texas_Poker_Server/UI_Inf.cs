@@ -64,7 +64,7 @@ namespace Texas_Poker_Server
             Console.WriteLine(Encoding.ASCII.GetString(data));
             sClient[location].Send(data);
 
-            sClient[location].Receive(data);
+            Package_Rev(location);
             Console.WriteLine("Send Inf to{0}", location);
         }
 
