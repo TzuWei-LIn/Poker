@@ -17,7 +17,10 @@ namespace Texas_Poker_Server
                         if (Now_sit[i] != 0)
                             for (int j = 0; j < Now_sit.Length; j++)
                                 if (AC_money[j] != null)
-                                    Send_Package(i, "Enemy_Name" + " " + AC_money[j] + " " + j.ToString() + " end");
+                                {
+                                    Console.WriteLine("AC  = {0}", AC_money[j]);
+                                    Send_Package(i, "Enemy_Name" + " " + AC_money[j] + " " + j.ToString() + " " + Player_money[j].ToString() + " end");
+                                }
  
                     break;
 
@@ -59,7 +62,7 @@ namespace Texas_Poker_Server
                 case "Big_Blind":
                     for (int i = 0; i < Now_sit.Length; i++)
                         if (Now_sit[i] != 0)
-                            Send_Package(i, "Blind_Inf" + " " + location.ToString() + " " + Player_Raise_Money[location].ToString() + " end");
+                            Send_Package(i, "Blind_Inf" + " " + location.ToString() + " " + Player_Raise_Money[location].ToString() + " " + Player_money[location] + " end");
                     break;
 
             }

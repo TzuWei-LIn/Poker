@@ -77,9 +77,10 @@ namespace Poker_Server_Client
         public String Account = "";                             //玩家帳號
         public String PassWord = "";                           //玩家密碼
 
-        public String enemy_name;                           //用於顯示 其他玩家帳號 及 金錢
+        public String[] enemy_name = new string[6];                           //用於顯示 其他玩家帳號 及 金錢
         public int enemy_location;
         public int[] enemy_money = new int[6];
+        public StringBuilder Winner_Inf = new StringBuilder();
 
 
 
@@ -128,24 +129,33 @@ namespace Poker_Server_Client
             Package_Process pp = new Package_Process(a, client);             //處理資訊
             switch (title)
             {
+                case "Winner":
+                    Winner_Inf = pp.Winner_Inf;
+                    break;
+
                 case "Call_Inf":
                     Raise_money = pp.Raise_money;
                     Who_Raise = pp.Who_Raise;
+                    enemy_money[Who_Raise] = pp.enemy_money[Who_Raise];
                     break;
 
                 case "Raise_Inf":
                     Raise_money = pp.Raise_money;
                     Who_Raise = pp.Who_Raise;
+                    enemy_money[Who_Raise] = pp.enemy_money[Who_Raise];
                     break;
 
                 case "Blind_Inf":
                     Raise_money = pp.Raise_money;
                     Who_Raise = pp.Who_Raise;
+                    enemy_money[Who_Raise] = pp.enemy_money[Who_Raise];
                     break;
 
                 case "Enemy_Name":
-                    enemy_name = pp.enemy_name;
                     enemy_location = pp.enemy_loaction;
+                    enemy_name[enemy_location] = pp.enemy_name[enemy_location];
+                    //MessageBox.Show(enemy_location.ToString());
+                    enemy_money[enemy_location] = pp.enemy_money[enemy_location];
                     break;
 
                 case "Total_Money":
@@ -247,6 +257,13 @@ namespace Poker_Server_Client
             client.Send(data);
         }
 
+        public void Exit(String a)
+        {
+            byte[] data = new byte[1024];
+            data = Encoding.ASCII.GetBytes(a + " end");
+            client.Send(data);
+        }
+
         public void Dynamic_Test()
         {
             enemy[0] = Image_card_1;
@@ -290,12 +307,17 @@ namespace Poker_Server_Client
                         {
                             switch (title)
                             {
+                                case "Winner":
+                                    Winner_Box.Text = Winner_Inf.ToString();
+                                    break;
 
                                 case "Call_Inf":
                                 case "Raise_Inf":
                                 case "Blind_Inf":
                                     enemy_Raise[Who_Raise].Content = Raise_money;
                                     enemy_Raise[Who_Raise].Visibility = System.Windows.Visibility.Visible;
+                                    //MessageBox.Show(enemy_money[Who_Raise].ToString());
+                                    enemy_Name[Who_Raise].Content = enemy_name[Who_Raise] + ":" + enemy_money[Who_Raise];
                                     break;
 
                                 case "Enemy_Hide":
@@ -304,6 +326,11 @@ namespace Poker_Server_Client
 
                                 case "Total_Money":
                                     Total_money_Label.Content = total_money;
+                                    break;
+
+                                case "Enemy_Name":
+                                    enemy_Name[enemy_location].Content = enemy_name[enemy_location] + ":" + enemy_money[enemy_location].ToString();
+                                    enemy_Name[enemy_location].Visibility = System.Windows.Visibility.Visible;
                                     break;
 
                                 case "Enemy_Inf":
@@ -350,7 +377,7 @@ namespace Poker_Server_Client
 
                                 case "GameRound1":
                                     Raise_Block.Text = (Need_money > 0) ? (Raise_money * 2).ToString() : "100";
-                                    Raise_Button.Content = "Raise to" + Raise_Block;
+                                    Raise_Button.Content = "Raise to" + Raise_Block.Text;
                                     Need_money = Raise_money - tmp_Raise_money;
                                     Call_Button.Content = (Need_money > 0) ? "Call" + Need_money : "Check";
 
@@ -362,9 +389,12 @@ namespace Poker_Server_Client
                                 case "GameRound2":
                                 case "GameRound3":
                                 case "GameRound4":
-                                    Call_Button.Content = (Raise_money != 0) ? "Call " + (Raise_money - tmp_Raise_money) : "Check";
+                                    if ((Raise_money - tmp_Raise_money) < Player_money)
+                                        Call_Button.Content = (Raise_money != 0) ? "Call " + (Raise_money - tmp_Raise_money) : "Check";
+                                    else
+                                        Call_Button.Content = Player_money;
                                     Raise_Block.Text = (Raise_money != 0) ? (Raise_money * 2).ToString() : "100";
-                                    Raise_Button.Content = "Raise to" + Raise_Block;
+                                    Raise_Button.Content = "Raise to" + Raise_Block.Text;
 
                                     Timer_label.Content = Sec.ToString();
 
@@ -394,6 +424,7 @@ namespace Poker_Server_Client
                                     Money_Label.Content = Player_money;
                                     Total_money_Label.Content = total_money;
                                     Button_Show("Image_Hide");
+                                    Button_Show("Enemy_label");
                                     Clean_Data();
                                     break;
                             }
@@ -423,16 +454,18 @@ namespace Poker_Server_Client
                        Call_Button.Visibility = System.Windows.Visibility.Hidden;
                        Raise_Button.Visibility = System.Windows.Visibility.Hidden;
                        for (int i = 0; i < enemy.Length; i++)
-                           enemy[i].Visibility = System.Windows.Visibility.Hidden;
+                           enemy[i].Visibility = System.Windows.Visibility.Hidden;                     
+                   }
+                       else if(a.Equals("Enemy_Name"))
+                   {
+                       for (int i = 0; i < enemy_Raise.Length; i++)
+                           enemy_Name[i].Visibility = System.Windows.Visibility.Hidden;
+                   }
+                   else if (a.Equals("Enemy_label"))
+                   {
                        for (int i = 0; i < enemy_Raise.Length; i++)
                            enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
                    }
-                   else if (a.Equals("Enemy_label"))
-                       for (int i = 0; i < enemy_Raise.Length; i++)
-                       {
-                           enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
-                           enemy_Name[i].Visibility = System.Windows.Visibility.Hidden;
-                       }
 
                    else
                    {
@@ -465,6 +498,7 @@ namespace Poker_Server_Client
             Dynamic_Test();
             Button_Show("Hide");
             Button_Show("Enemy_label");
+            Button_Show("Enemy_Name");
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -516,9 +550,17 @@ namespace Poker_Server_Client
         /// <param name="e"></param>
         private void Raise_Button_Click(object sender, RoutedEventArgs e)
         {
-            Raise_money = int.Parse(Raise_Block.Text);
-            Need_money = Raise_money - tmp_Raise_money;
-            Player_money -= Need_money;
+            if (int.Parse(Raise_Block.Text) < Player_money)
+            {
+                Raise_money = int.Parse(Raise_Block.Text);
+                Need_money = Raise_money - tmp_Raise_money;
+            }
+            else
+            {
+                Need_money = Player_money;
+                Raise_money = Player_money;
+            }
+                Player_money -= Need_money;
             //total_money += Need_money;
             tmp_Raise_money = Raise_money;
             //Call_money_Label.Content = tmp_Raise_money;
@@ -672,6 +714,17 @@ namespace Poker_Server_Client
                 timer.Stop();
                 Fold_Button_Click(new object(), new RoutedEventArgs());
             }
+        }
+
+        private void Minus_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.Parse(Raise_Block.Text) > 100)
+                Raise_Block.Text = (int.Parse(Raise_Block.Text) - 100).ToString();
+        }
+
+        private void Plus_Click(object sender, RoutedEventArgs e)
+        {
+            Raise_Block.Text = (int.Parse(Raise_Block.Text) + 100).ToString();
         }
 
 
