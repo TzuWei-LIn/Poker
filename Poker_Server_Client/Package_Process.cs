@@ -11,20 +11,20 @@ namespace Poker_Server_Client
 {
     class Package_Process : Game_start
     {
-        public Package_Process (String rev_message,Socket client)
+        public Package_Process(String rev_message, Socket client)
         {
             //MainWindow mw = new MainWindow();
             String[] b = rev_message.Split(' ');
-            Back(client,b[0]);
+            Back(client, b[0]);
 
             Thread.Sleep(200);
-            
-            switch(b[0])
+
+            switch (b[0])
             {
                 case "Winner":
-                    for (int i = 0; i < b.Length-1; i++)
+                    for (int i = 0; i < b.Length - 1; i++)
                         Winner_Inf.Append(b[i] + " ");
-                        break;
+                    break;
 
                 case "Call_Inf":
                     Raise_money = int.Parse(b[1]);
@@ -106,8 +106,8 @@ namespace Poker_Server_Client
                     Player_money = int.Parse(b[1]);
                     break;
 
-                case "Tie":    
-                    Player_money = int.Parse(Inf[2]);                  
+                case "Tie":
+                    Player_money = int.Parse(Inf[2]);
                     break;
 
                 case "Lose":
@@ -141,7 +141,7 @@ namespace Poker_Server_Client
         /// 回傳至Server 証明收到了
         /// </summary>
         /// <param name="client"></param>
-        public new void Back(Socket client,String a)
+        public new void Back(Socket client, String a)
         {
             byte[] data = new byte[1024];
             data = Encoding.ASCII.GetBytes("OK end");

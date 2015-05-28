@@ -72,6 +72,7 @@ namespace Texas_Poker_Server
                 Broadcasting();
                 EndGame();
                 Clean_Data();
+
                 //Console.ReadKey();
                 Thread.Sleep(2000);
             }
@@ -94,6 +95,34 @@ namespace Texas_Poker_Server
             max_score = 0;                                     //結束所有回合後 最高分數
         }
 
+       //private static void Exit()
+       // {
+       //     for (int i = 0; i < Now_sit.Length; i++)
+       //     {
+       //         if (Now_sit[i] != 0)
+       //         {
+       //             byte[] data = new byte[1024];
+       //             data = Encoding.ASCII.GetBytes("Continue?" + " end");
+       //             sClient[i].Send(data);
+       //             String a = Package_Rev2(i);
+       //             String[] b = a.Split(' ');
+
+       //             switch (b[0])
+       //             {
+       //                 case "Leave":
+       //                     connect_ppl--;
+       //                     sit[i] = 0;
+       //                     if (connect_ppl < 2)
+       //                         arEvent = new AutoResetEvent(false);
+       //                     break;
+       //                 default:
+       //                     break;
+       //             }
+       //         }
+       //         Send_Package_Server(i);
+       //     }
+       //     Console.WriteLine("Send Finish to{0}", i);
+       // }
 
         private static void Broadcasting()
         {
@@ -122,17 +151,23 @@ namespace Texas_Poker_Server
                     data = Encoding.ASCII.GetBytes("New_Round" + " " + Player_money[i].ToString() + " end");
                     Console.WriteLine(Encoding.ASCII.GetString(data));
                     sClient[i].Send(data);
-
                     Package_Rev2(i);
-
-                    Console.WriteLine("Send Finish to{0}", i);
                 }
             }
         }
 
         public virtual void Send_Package(int location)
         {
+            byte[] data = new byte[1024];
+            data = Encoding.ASCII.GetBytes("OK end");
+            sClient[location].Send(data);
+        }
 
+        public static void Send_Package_Server(int location)
+        {
+            byte[] data = new byte[1024];
+            data = Encoding.ASCII.GetBytes("OK end");
+            sClient[location].Send(data);
         }
 
         protected virtual void Send_Package(int location, int Game_Round, int Raise_Money)
