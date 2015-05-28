@@ -44,6 +44,11 @@ namespace Poker_Server_Client
                     total_Player = int.Parse(b[1]);
                     break;
 
+                case "Enemy_Name":
+                    enemy_name = b[1];
+                    enemy_loaction = int.Parse(b[2]);
+                    break;
+
                 case "Player_Card":
                     Player_number = int.Parse(b[3]);
                     Player_Inf[1] = b[1];

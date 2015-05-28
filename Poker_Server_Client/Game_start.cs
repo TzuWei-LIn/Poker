@@ -45,6 +45,10 @@ namespace Poker_Server_Client
 
         public int total_Player = 0;                //總玩家人數
 
+        public String enemy_name;                           //用於顯示 其他玩家帳號 及 金錢
+        public int enemy_loaction;
+        public int[] enemy_money = new int[6];
+
 
         public void Clean_Data()
         {

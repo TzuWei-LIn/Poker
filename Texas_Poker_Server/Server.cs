@@ -59,8 +59,9 @@ namespace Texas_Poker_Server
                 Array.Copy(sit, Now_sit, sit.Length);
                 Now_connect_ppl = connect_ppl;
 
+                UI_Inf ui = new UI_Inf("Enemy_Name");
                 GetsCard GC = new GetsCard(0);                  //發牌給玩家(0)
-                UI_Inf ui = new UI_Inf("Enemy_Inf");
+                ui = new UI_Inf("Enemy_Inf");
                 Send_Player_Money SM = new Send_Player_Money();     //發錢給玩家
                 Blind bd = new Blind();
                 Total_money = Big_Blind + (Big_Blind / 2);

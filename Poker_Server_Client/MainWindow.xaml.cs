@@ -61,19 +61,25 @@ namespace Poker_Server_Client
         protected int tmp_Raise_money = 0;        //暫存下注金額
         protected int Need_money = 0;                 //玩家須下注金額
         protected int max_leangh = 0;                 //debug
+
         protected Image[] enemy = new Image[12];
         protected Label[] enemy_Raise = new Label[6];
+        protected Label[] enemy_Name = new Label[6];
 
         protected String Package_tmp = null;                        //假如收到封包不正確 將會以此資料重傳
 
         protected int total_Player = 0;                //總玩家人數
 
-        public int Sec = 7;                                        //計時器時間
+        public int Sec = 15;                                        //計時器時間
         DispatcherTimer timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1) }; //計時器
         //Storyboard timer = new Storyboard() { Duration = TimeSpan.FromSeconds(1) };
 
         public String Account = "";                             //玩家帳號
         public String PassWord = "";                           //玩家密碼
+
+        public String enemy_name;                           //用於顯示 其他玩家帳號 及 金錢
+        public int enemy_location;
+        public int[] enemy_money = new int[6];
 
 
 
@@ -137,6 +143,11 @@ namespace Poker_Server_Client
                     Who_Raise = pp.Who_Raise;
                     break;
 
+                case "Enemy_Name":
+                    enemy_name = pp.enemy_name;
+                    enemy_location = pp.enemy_loaction;
+                    break;
+
                 case "Total_Money":
                     total_money = pp.total_money;
                     break;
@@ -159,7 +170,7 @@ namespace Poker_Server_Client
                 case "New_Round":
                     Player_money = pp.Player_money;
                     total_money = 0;
-                    Sec = 7;
+                    Sec = 15;
                     break;
 
                 case "Small_Blind":
@@ -182,7 +193,7 @@ namespace Poker_Server_Client
                 case "GameRound1":
                     Raise_money = pp.Raise_money;
                     Need_money = pp.Need_money;
-                    Sec = 7;
+                    Sec = 15;
                     break;
 
                 case "GameRound2":
@@ -191,7 +202,7 @@ namespace Poker_Server_Client
                     Game_State = pp.Game_State;
                     Raise_money = pp.Raise_money;
                     Need_money = Raise_money - tmp_Raise_money;
-                    Sec = 7;
+                    Sec = 15;
                     break;
 
                 case "Win":
@@ -258,11 +269,18 @@ namespace Poker_Server_Client
             enemy_Raise[4] = Call_money_Label_4;
             enemy_Raise[5] = Call_money_Label_5;
 
-            this.Dispatcher.BeginInvoke((Action)delegate()
-            {
-                for (int i = 0; i < enemy_Raise.Length; i++)
-                    enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
-            });
+            enemy_Name[0] = Enemy_Name_label_1;
+            enemy_Name[1] = Enemy_Name_label_2;
+            enemy_Name[2] = Enemy_Name_label_3;
+            enemy_Name[3] = Enemy_Name_label_4;
+            enemy_Name[4] = Enemy_Name_label_5;
+            enemy_Name[5] = Enemy_Name_label_6;
+
+                this.Dispatcher.BeginInvoke((Action)delegate()
+                {
+                    for (int i = 0; i < enemy_Raise.Length; i++)
+                        enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
+                });
 
         }
 
@@ -411,7 +429,10 @@ namespace Poker_Server_Client
                    }
                    else if (a.Equals("Enemy_label"))
                        for (int i = 0; i < enemy_Raise.Length; i++)
+                       {
                            enemy_Raise[i].Visibility = System.Windows.Visibility.Hidden;
+                           enemy_Name[i].Visibility = System.Windows.Visibility.Hidden;
+                       }
 
                    else
                    {
@@ -441,7 +462,9 @@ namespace Poker_Server_Client
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Dynamic_Test();
             Button_Show("Hide");
+            Button_Show("Enemy_label");
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -531,7 +554,7 @@ namespace Poker_Server_Client
         {
             try
             {
-                Dynamic_Test();
+                //Dynamic_Test();
                 Button_Show("Enemy_label");
                 Button_Show("Hide");
                 while (true)

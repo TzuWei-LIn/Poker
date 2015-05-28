@@ -12,16 +12,25 @@ namespace Texas_Poker_Server
         {
             switch (a)
             {
+                case "Enemy_Name":
+                    for (int i = 0; i < Now_sit.Length; i++)
+                        if (Now_sit[i] != 0)
+                            for (int j = 0; j < Now_sit.Length; j++)
+                                if (AC_money[j] != null)
+                                    Send_Package(i, "Enemy_Name" + " " + AC_money[j] + " " + j.ToString() + " end");
+ 
+                    break;
+
                 case "Enemy_Inf":
                     for (int i = 0; i < Now_sit.Length; i++)
                         if (Now_sit[i] != 0)
-                            Send_Package(i, "Enemy_Inf" + " " + Now_connect_ppl.ToString() +" end");
+                            Send_Package(i, "Enemy_Inf" + " " + Now_connect_ppl.ToString() + " end");
                     break;
 
                 case "Enemy_Hide":
                     for (int i = 0; i < Now_sit.Length; i++)
                         if (Now_sit[i] != 0)
-                            Send_Package(i, a + " end" );
+                            Send_Package(i, a + " end");
                     break;
 
                 case "Total_Money":
@@ -39,7 +48,7 @@ namespace Texas_Poker_Server
                 case "Call":
                     for (int i = 0; i < Now_sit.Length; i++)
                         if (Now_sit[i] != 0)
-                            Send_Package(i, "Call_Inf" + " " + Raise_Money.ToString() + " " + location.ToString() + " " + Player_money[location]+" end");
+                            Send_Package(i, "Call_Inf" + " " + Raise_Money.ToString() + " " + location.ToString() + " " + Player_money[location] + " end");
                     break;
                 case "Raise":
                     for (int i = 0; i < Now_sit.Length; i++)
@@ -50,7 +59,7 @@ namespace Texas_Poker_Server
                 case "Big_Blind":
                     for (int i = 0; i < Now_sit.Length; i++)
                         if (Now_sit[i] != 0)
-                            Send_Package(i, "Blind_Inf" + " " + location.ToString() + " " +Player_Raise_Money[location].ToString() + " end");
+                            Send_Package(i, "Blind_Inf" + " " + location.ToString() + " " + Player_Raise_Money[location].ToString() + " end");
                     break;
 
             }
