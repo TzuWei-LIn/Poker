@@ -21,19 +21,27 @@ namespace Poker_Server_Client
             
             switch(b[0])
             {
+                case "Winner":
+                    for (int i = 0; i < b.Length-1; i++)
+                        Winner_Inf.Append(b[i] + " ");
+                        break;
+
                 case "Call_Inf":
                     Raise_money = int.Parse(b[1]);
                     Who_Raise = int.Parse(b[2]);
+                    enemy_money[Who_Raise] = int.Parse(b[3]);
                     break;
 
                 case "Blind_Inf":
                     Raise_money = int.Parse(b[2]);
                     Who_Raise = int.Parse(b[1]);
+                    enemy_money[Who_Raise] = int.Parse(b[3]);
                     break;
 
                 case "Raise_Inf":
                     Raise_money = int.Parse(b[1]);
                     Who_Raise = int.Parse(b[2]);
+                    enemy_money[Who_Raise] = int.Parse(b[3]);
                     break;
 
                 case "Total_Money":
@@ -45,8 +53,9 @@ namespace Poker_Server_Client
                     break;
 
                 case "Enemy_Name":
-                    enemy_name = b[1];
                     enemy_loaction = int.Parse(b[2]);
+                    enemy_name[enemy_loaction] = b[1];
+                    enemy_money[enemy_loaction] = int.Parse(b[3]);
                     break;
 
                 case "Player_Card":

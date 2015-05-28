@@ -12,7 +12,7 @@ namespace Texas_Poker_Server
     class Server
     {
         public static int connect_ppl { get; set; }                 //連線人數
-        public static int Now_connect_ppl { get; private set; }
+        public static int Now_connect_ppl { get; set; }
         public static int[] sit = new int[10];                          //坐位
         protected static int[] Now_sit = new int[10];
 
@@ -41,6 +41,7 @@ namespace Texas_Poker_Server
         protected static String[] score_result = new string[10];                  //玩家牌形
         protected static int max_score { get; set; }                                     //結束所有回合後 最高分數
         protected static String[] AC_money = new string[10];                    //紀錄玩家帳號 已變更新資料庫
+        protected static StringBuilder Winner_Inf = new StringBuilder();           //顯示贏家資訊
 
         static void Main(string[] args)
         {
@@ -55,7 +56,7 @@ namespace Texas_Poker_Server
             tt.Start();
             arEvent.WaitOne();              //waiting here until enough player
             while (true)
-            {    
+            {
                 Array.Copy(sit, Now_sit, sit.Length);
                 Now_connect_ppl = connect_ppl;
 
@@ -63,11 +64,12 @@ namespace Texas_Poker_Server
                 GetsCard GC = new GetsCard(0);                  //發牌給玩家(0)
                 ui = new UI_Inf("Enemy_Inf");
                 Send_Player_Money SM = new Send_Player_Money();     //發錢給玩家
-                Blind bd = new Blind();
+                Blind bd = new Blind();                         //大小盲注
                 Total_money = Big_Blind + (Big_Blind / 2);
                 Game_Round GR = new Game_Round();
                 GR.GameRound();
                 Console.WriteLine("Finish Game");
+                Broadcasting();
                 EndGame();
                 Clean_Data();
                 //Console.ReadKey();
@@ -78,20 +80,38 @@ namespace Texas_Poker_Server
 
         private static void Clean_Data()
         {
-        User_card = new int[10, 2];                           //紀錄玩家的牌 10人2張
-        total_card = new int[52];                              //總共牌數 判斷哪些有發過
-        Player_Raise_Money = new int[10];              //每個玩家下注金額(更新資訊用)
-        Total_money = 0;                                        //獎池
-        Public_card = new int[5];                              //公牌
-        card_public_total = 0;                                   //公牌張數
-        public_card_score = 0;                                 //公牌分數
-         public_card_result = null;                          //公牌牌形
-        score = new int[10];                                      //玩家分數
-        score_result = new string[10];                  //玩家牌形
-        Raise_Money = Big_Blind;
-        max_score = 0;                                     //結束所有回合後 最高分數
+            User_card = new int[10, 2];                           //紀錄玩家的牌 10人2張
+            total_card = new int[52];                              //總共牌數 判斷哪些有發過
+            Player_Raise_Money = new int[10];              //每個玩家下注金額(更新資訊用)
+            Total_money = 0;                                        //獎池
+            Public_card = new int[5];                              //公牌
+            card_public_total = 0;                                   //公牌張數
+            public_card_score = 0;                                 //公牌分數
+            public_card_result = null;                          //公牌牌形
+            score = new int[10];                                      //玩家分數
+            score_result = new string[10];                  //玩家牌形
+            Raise_Money = Big_Blind;
+            max_score = 0;                                     //結束所有回合後 最高分數
         }
 
+
+        private static void Broadcasting()
+        {
+            for (int i = 0; i < Now_sit.Length; i++)
+            {
+                if (Now_sit[i] != 0)
+                {
+                    byte[] data = new byte[1024];
+                    data = Encoding.ASCII.GetBytes(Winner_Inf.ToString() + " end");
+                    Console.WriteLine(Encoding.ASCII.GetString(data));
+                    sClient[i].Send(data);
+
+                    Package_Rev2(i);
+
+                    Console.WriteLine("Send Finish Winner_Inf to{0}", i);
+                }
+            }
+        }
         private static void EndGame()
         {
             for (int i = 0; i < Now_sit.Length; i++)

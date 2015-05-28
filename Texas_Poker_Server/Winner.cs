@@ -58,6 +58,7 @@ namespace Texas_Poker_Server
                 {
                     Winner.Add(i);
                     sb.Append(i.ToString());
+                    Winner_Inf.Append("Winner is " + AC_money[i] + " Result is " + score_result[i] + "\n");
                 }
             for (int i = 0; i < Now_sit.Length; i++)
             {

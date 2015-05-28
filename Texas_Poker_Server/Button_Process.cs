@@ -18,7 +18,7 @@ namespace Texas_Poker_Server
                     if (int.Parse(b[1]) > Raise_Money)
                         Raise_Money = int.Parse(b[1]);
                     Total_money += int.Parse(b[1]);
-                    Console.WriteLine("GG = {0}",call_ppl);
+                    //Console.WriteLine("GG = {0}",call_ppl);
                     call_ppl++;
                     Player_money[location] = int.Parse(b[2]);
                     UI_Inf ui = new UI_Inf(location, "Call");

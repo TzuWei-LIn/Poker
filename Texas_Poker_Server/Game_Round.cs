@@ -89,6 +89,7 @@ namespace Texas_Poker_Server
             {
                 Player_state.Remove(location);
                 Now_sit[location] = 2;
+                Now_connect_ppl--;
             }
             else
                 call_ppl = 1;

@@ -15,7 +15,7 @@
             </Image.RenderTransform>
         </Image>
 
-        <Button x:Name="Fold_Button" HorizontalAlignment="Left" Margin="205,427,0,0" VerticalAlignment="Top" Width="101" RenderTransformOrigin="0.469,0.513" Height="58" Content="FOLD" FontFamily="Copperplate Gothic Bold" FontSize="14.667" Click="Fold_Button_Click">
+        <Button x:Name="Fold_Button" HorizontalAlignment="Left" Margin="205,427,0,0" VerticalAlignment="Top" Width="107" RenderTransformOrigin="0.469,0.513" Height="58" Content="FOLD" FontFamily="Copperplate Gothic Bold" FontSize="14.667" Click="Fold_Button_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -32,9 +32,9 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <TextBox x:Name="Message_Box" HorizontalAlignment="Left" Height="49" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" Margin="10,10,0,0"/>
-        <Label x:Name="Server_Inf" Content="Label" HorizontalAlignment="Left" Margin="662,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Raise_Button" HorizontalAlignment="Left" Margin="448,431,0,0" VerticalAlignment="Top" Width="101" RenderTransformOrigin="0.469,0.513" Height="58" Content="raise" FontFamily="Copperplate Gothic Bold" FontSize="14.667" Click="Raise_Button_Click">
+        <TextBox x:Name="Winner_Box" HorizontalAlignment="Left" Height="126" TextWrapping="Wrap" VerticalAlignment="Top" Width="141" Margin="10,10,0,0"/>
+        <Label x:Name="Server_Inf" Content="Staus" HorizontalAlignment="Left" Margin="662,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Raise_Button" HorizontalAlignment="Left" Margin="445,431,0,0" VerticalAlignment="Top" Width="116" RenderTransformOrigin="0.469,0.513" Height="58" Content="raise" FontFamily="Copperplate Gothic Bold" FontSize="14.667" Click="Raise_Button_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -51,7 +51,7 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="Call_Button" HorizontalAlignment="Left" Margin="324,428,0,0" VerticalAlignment="Top" Width="100" Click="Call_Button_Click" RenderTransformOrigin="0.469,0.513" Height="58" Content="CALL" FontFamily="Copperplate Gothic Bold" FontSize="14.667">
+        <Button x:Name="Call_Button" HorizontalAlignment="Left" Margin="324,428,0,0" VerticalAlignment="Top" Width="110" Click="Call_Button_Click" RenderTransformOrigin="0.469,0.513" Height="58" Content="CALL" FontFamily="Copperplate Gothic Bold" FontSize="14.667">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -68,8 +68,8 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Rectangle Fill="#FF005D19" HorizontalAlignment="Left" Height="43" Margin="201,499,0,0" Stroke="Black" VerticalAlignment="Top" Width="353" RadiusY="5.5" RadiusX="5.5" Opacity="0.67"/>
-        <ScrollBar HorizontalAlignment="Left" Height="201" VerticalAlignment="Top" Margin="406,418,0,-44" Width="35" RenderTransformOrigin="0.5,0.5">
+        <Rectangle Fill="#FF005D19" HorizontalAlignment="Left" Height="56" Margin="199,492,0,0" Stroke="Black" VerticalAlignment="Top" Width="370" RadiusY="5.5" RadiusX="5.5" Opacity="0.67"/>
+        <ScrollBar HorizontalAlignment="Left" Height="201" VerticalAlignment="Top" Margin="408,421,0,-47" Width="35" RenderTransformOrigin="0.5,0.5">
             <ScrollBar.Background>
                 <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
                     <GradientStop Color="#FF5FA672" Offset="0"/>
@@ -85,7 +85,7 @@
                 </TransformGroup>
             </ScrollBar.RenderTransform>
         </ScrollBar>
-        <Button Content="－" HorizontalAlignment="Left" VerticalAlignment="Top" Width="33" Margin="287,499,0,0" FontFamily="Stencil Std" FontSize="24" Height="37" RenderTransformOrigin="0.5,0.5" FontWeight="Bold">
+        <Button x:Name="Minus" Content="－" HorizontalAlignment="Left" VerticalAlignment="Top" Width="33" Margin="287,503,0,0" FontFamily="Stencil Std" FontSize="24" Height="37" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" Click="Minus_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -101,13 +101,13 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Margin="526,499,0,0" FontFamily="Stencil Std" FontSize="24" Height="37" RenderTransformOrigin="0.5,0.5">
+        <Button x:Name="Plus" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Margin="532,504,0,0" FontFamily="Stencil Std" FontSize="24" Height="37" RenderTransformOrigin="0.435,0.811" Click="Plus_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform Angle="0.228"/>
-                    <TranslateTransform/>
+                    <TranslateTransform X="-0.046" Y="-0.008"/>
                 </TransformGroup>
             </Button.RenderTransform>
             <Button.Background>
@@ -119,11 +119,11 @@
         </Button>
         <Image x:Name="Image_card_1" HorizontalAlignment="Left" Height="60" Margin="337,308,0,0" VerticalAlignment="Top" Width="50"/>
         <Image x:Name="Image_card_2" HorizontalAlignment="Left" Height="60" Margin="407,308,0,0" VerticalAlignment="Top" Width="50"/>
-        <Label x:Name="Money_Label" Content="Label" HorizontalAlignment="Left" Margin="534,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Money_Label" Content="Money" HorizontalAlignment="Left" Margin="534,10,0,0" VerticalAlignment="Top"/>
         <Image x:Name="Enemy_Image_1" HorizontalAlignment="Left" Height="60" Margin="586,243,0,0" VerticalAlignment="Top" Width="50"/>
         <Image x:Name="Enemy_Image_2" HorizontalAlignment="Left" Height="60" Margin="652,239,0,0" VerticalAlignment="Top" Width="50"/>
-        <Label x:Name="Player_Number_Label" Content="Label" HorizontalAlignment="Left" Margin="403,10,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="Total_money_Label" Content="Label" HorizontalAlignment="Left" Margin="365,131,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Player_Number_Label" Content="Location" HorizontalAlignment="Left" Margin="403,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Total_money_Label" Content="Bonus" HorizontalAlignment="Left" Margin="365,131,0,0" VerticalAlignment="Top"/>
         <Image x:Name="Public_card_image1" HorizontalAlignment="Left" Height="69" Margin="183,181,0,0" VerticalAlignment="Top" Width="58"/>
         <Image x:Name="Public_card_image2" HorizontalAlignment="Left" Height="69" Margin="253,181,0,0" VerticalAlignment="Top" Width="58"/>
         <Image x:Name="Public_card_image3" HorizontalAlignment="Left" Height="69" Margin="323,181,0,0" VerticalAlignment="Top" Width="58"/>
@@ -144,7 +144,7 @@
         <Label x:Name="Call_money_Label_4" Content="Label" HorizontalAlignment="Left" Margin="183,165,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Call_money_Label_5" Content="Label" HorizontalAlignment="Left" Margin="216,273,0,0" VerticalAlignment="Top"/>
         <Button x:Name="Connect_btn" Content="Connect" HorizontalAlignment="Left" Margin="31,430,0,0" VerticalAlignment="Top" Width="75" Click="Connect_btn_Click" FontFamily="Microsoft JhengHei UI"/>
-        <TextBox x:Name="Raise_Block" HorizontalAlignment="Left" Height="38" Margin="216,499,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="58" RenderTransformOrigin="0.534,0.316"/>
+        <TextBox x:Name="Raise_Block" HorizontalAlignment="Left" Height="38" Margin="216,504,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="58" RenderTransformOrigin="0.534,0.316" Foreground="#FFCB2E2E"/>
         <Label x:Name="Timer_label" Content="Label" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Enemy_Name_label_1" Content="Label" HorizontalAlignment="Left" Margin="365,386,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Enemy_Name_label_2" Content="Label" HorizontalAlignment="Left" Margin="627,326,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.755,1.907"/>

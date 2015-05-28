@@ -22,6 +22,7 @@ namespace Texas_Poker_Server
                         data = Encoding.ASCII.GetBytes("Small_Blind" + " " + Big_Blind.ToString() + " " + j.ToString() + " end");
                         Player_Raise_Money[j] = Big_Blind / 2;
                         count++;
+                        Player_money[j] -= Big_Blind / 2;
                         UI_Inf ui = new UI_Inf(j, "Small_Blind");
                     }
                     else if (count == 1)
@@ -30,6 +31,7 @@ namespace Texas_Poker_Server
                         Player_Raise_Money[j] = Big_Blind;
                         Raise_position =( j % Now_sit.Length)+1;
                         count++;
+                        Player_money[j] -= Big_Blind;
                         UI_Inf ui = new UI_Inf(j, "Big_Blind");
                     }
                     else
