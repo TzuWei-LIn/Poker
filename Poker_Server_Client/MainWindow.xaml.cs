@@ -372,6 +372,7 @@ namespace Poker_Server_Client
 
                                 case "Player_Card":
                                     Server_Inf.Content = "Connect";
+                                    Connect_btn.Visibility = System.Windows.Visibility.Hidden;
                                     enemy[Player_number * 2].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[1] + @".GIF"));
                                     enemy[Player_number * 2].Visibility = System.Windows.Visibility.Visible;
                                     enemy[Player_number * 2 + 1].Source = new BitmapImage(new Uri(@Directory.GetCurrentDirectory() + @"\Poker_Image\" + Player_Inf[2] + @".GIF"));
@@ -386,6 +387,7 @@ namespace Poker_Server_Client
 
                                     Call_Button.Content = (Need_money > 0) ? "Call" + Need_money : "Check";
 
+                                    Timer_label.Foreground = new SolidColorBrush(Colors.Black);
                                     Timer_label.Content = Sec.ToString();
 
                                     Button_Show("Show");
@@ -401,6 +403,7 @@ namespace Poker_Server_Client
                                     Raise_Block.Text = (Raise_money != 0) ? (Raise_money * 2).ToString() : "100";
                                     Raise_Button.Content = "Raise to" + Raise_Block.Text;
 
+                                    Timer_label.Foreground = new SolidColorBrush(Colors.Black);
                                     Timer_label.Content = Sec.ToString();
 
                                     Button_Show("Show");
@@ -457,7 +460,7 @@ namespace Poker_Server_Client
                        Public_card_image5.Visibility = System.Windows.Visibility.Hidden;
                        Fold_Button.Visibility = System.Windows.Visibility.Hidden;
                        Call_Button.Visibility = System.Windows.Visibility.Hidden;
-                       Raise_Button.Visibility = System.Windows.Visibility.Hidden;
+                       Raise_Button.Visibility = System.Windows.Visibility.Hidden;                       
                        for (int i = 0; i < enemy.Length; i++)
                            enemy[i].Visibility = System.Windows.Visibility.Hidden;
                    }
@@ -713,6 +716,8 @@ namespace Poker_Server_Client
             {
                 Sec--;
                 Timer_label.Content = Sec.ToString();
+                if (Sec < 6)
+                    Timer_label.Foreground = new SolidColorBrush(Colors.Red);
             }
             else
             {
